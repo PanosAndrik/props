@@ -22,9 +22,26 @@ Open http://localhost:3000
 | Admin | admin@prop.local   | admin123  |
 | User  | demo@prop.local    | demo123   |
 
-## GitHub — checkpoints (αλλαγές)
+## Public site
 
-Το project είναι ήδη Git repo. Κάθε σημαντική αλλαγή:
+- **Home** — stats + featured firms
+- **/firms** — list with search, asset filter, featured filter
+- **/firms/[slug]** — firm detail + reviews (login to submit)
+- **/compare** — pick 2–3 firms, side-by-side table
+- **/blog** — published posts
+
+## Admin panel (`/admin`)
+
+Requires **ADMIN** role. Sidebar: Dashboard, Firms, Blog, Reviews.
+
+| Section   | Features |
+|-----------|----------|
+| Dashboard | Stats, recent pending reviews, quick actions |
+| Firms     | List, add, edit, delete, featured/published toggles |
+| Blog      | List, create, edit, delete, publish draft |
+| Reviews   | All reviews, filter by status, approve/reject |
+
+## GitHub — checkpoints
 
 ```powershell
 git add .
@@ -33,46 +50,17 @@ git commit -m "Describe what you changed"
 git push
 ```
 
-### Πρώτη σύνδεση με GitHub
+Remote: https://github.com/PanosAndrik/props.git
 
-1. Δημιούργησε **κενό** repo στο GitHub (χωρίς README) — π.χ. `prop-platform`
-2. Στο PC:
-
-```powershell
-cd C:\Projects\prop-platform
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/prop-platform.git
-git push -u origin main
-```
-
-Αντικατέστησε `YOUR_USERNAME` και το όνομα του repo.
-
-### Με GitHub CLI (προαιρετικό)
-
-```powershell
-winget install GitHub.cli
-gh auth login
-gh repo create prop-platform --private --source=. --push
-```
-
-## Docker Postgres (optional)
+## Docker Postgres (optional, production)
 
 ```powershell
 docker compose up -d
 ```
 
-Then set in `.env`:
+Set `DATABASE_URL` to Postgres and change `provider` in `prisma/schema.prisma` to `postgresql`, then `npx prisma migrate dev`.
 
-```
-DATABASE_URL="postgresql://prop:prop_local_dev@localhost:5432/prop_platform"
-```
+## Production (later)
 
-And change `provider` in `prisma/schema.prisma` to `postgresql`, then `npx prisma migrate dev`.
-
-## What is included
-
-- Sign up / Sign in
-- Prop firms list & detail pages
-- Reviews (login required, admin approval)
-- Blog
-- Admin panel (approve/reject reviews)
+- Host on **Vercel** + **Neon/Supabase** Postgres
+- Set `AUTH_SECRET`, `AUTH_URL`, `DATABASE_URL` in hosting env

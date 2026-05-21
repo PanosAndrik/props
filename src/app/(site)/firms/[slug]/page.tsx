@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ReviewForm } from "./review-form";
 
@@ -9,7 +8,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export default async function FirmDetailPage({ params }: Props) {
   const { slug } = await params;
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   const firm = await prisma.propFirm.findUnique({
     where: { slug, published: true },

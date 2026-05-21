@@ -1,0 +1,34 @@
+import { notFound } from "next/navigation";
+import { prisma } from "@/lib/prisma";
+import { BlogForm } from "@/components/admin/blog-form";
+import { DeleteButton } from "@/components/admin/delete-button";
+
+type Props = { params: Promise<{ id: string }> };
+
+export default async function EditBlogPage({ params }: Props) {
+  const { id } = await params;
+  const post = await prisma.blogPost.findUnique({ where: { id } });
+  if (!post) notFound();
+
+  return (
+    <>
+      <div className="flex items-start justify-between gap-4">
+        <h2 className="text-2xl font-bold text-zinc-900">Edit post</h2>
+        <DeleteButton url={`/api/admin/blog/${post.id}`} redirectTo="/admin/blog" />
+      </div>
+      <div className="mt-8">
+        <BlogForm
+          initial={{
+            id: post.id,
+            title: post.title,
+            slug: post.slug,
+            excerpt: post.excerpt ?? "",
+            content: post.content,
+            coverImage: post.coverImage ?? "",
+            published: post.published,
+          }}
+        />
+      </div>
+    </>
+  );
+}

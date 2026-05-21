@@ -36,6 +36,12 @@ export default async function Home() {
               Browse firms
             </Link>
             <Link
+              href="/compare"
+              className="rounded-full border border-zinc-300 bg-white px-6 py-3 text-sm font-medium hover:bg-zinc-100"
+            >
+              Compare firms
+            </Link>
+            <Link
               href="/auth/signup"
               className="rounded-full border border-zinc-300 bg-white px-6 py-3 text-sm font-medium hover:bg-zinc-100"
             >

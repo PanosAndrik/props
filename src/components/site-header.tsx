@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 
 export async function SiteHeader() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const isAdmin = session?.user?.role === "ADMIN";
 
   return (
@@ -15,6 +14,9 @@ export async function SiteHeader() {
         <nav className="flex items-center gap-6 text-sm font-medium text-zinc-600">
           <Link href="/firms" className="hover:text-zinc-900">
             Firms
+          </Link>
+          <Link href="/compare" className="hover:text-zinc-900">
+            Compare
           </Link>
           <Link href="/blog" className="hover:text-zinc-900">
             Blog

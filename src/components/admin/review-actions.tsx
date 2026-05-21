@@ -5,16 +5,16 @@ import { useState } from "react";
 
 export function AdminReviewActions({ reviewId }: { reviewId: string }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<string | null>(null);
 
   async function updateStatus(status: "APPROVED" | "REJECTED") {
-    setLoading(true);
+    setLoading(status);
     await fetch(`/api/admin/reviews/${reviewId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
     });
-    setLoading(false);
+    setLoading(null);
     router.refresh();
   }
 
@@ -22,19 +22,19 @@ export function AdminReviewActions({ reviewId }: { reviewId: string }) {
     <div className="flex gap-2">
       <button
         type="button"
-        disabled={loading}
+        disabled={!!loading}
         onClick={() => updateStatus("APPROVED")}
-        className="rounded-full bg-green-700 px-4 py-1.5 text-xs font-medium text-white disabled:opacity-50"
+        className="rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
       >
-        Approve
+        {loading === "APPROVED" ? "…" : "Approve"}
       </button>
       <button
         type="button"
-        disabled={loading}
+        disabled={!!loading}
         onClick={() => updateStatus("REJECTED")}
-        className="rounded-full bg-zinc-200 px-4 py-1.5 text-xs font-medium text-zinc-800 disabled:opacity-50"
+        className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-50"
       >
-        Reject
+        {loading === "REJECTED" ? "…" : "Reject"}
       </button>
     </div>
   );
