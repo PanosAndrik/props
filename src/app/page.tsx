@@ -1,65 +1,84 @@
-import Image from "next/image";
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
 
-export default function Home() {
+export default async function Home() {
+  const [firmCount, reviewCount, postCount] = await Promise.all([
+    prisma.propFirm.count({ where: { published: true } }),
+    prisma.review.count({ where: { status: "APPROVED" } }),
+    prisma.blogPost.count({ where: { published: true } }),
+  ]);
+
+  const featured = await prisma.propFirm.findMany({
+    where: { published: true, featured: true },
+    take: 3,
+    orderBy: { name: "asc" },
+  });
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main>
+      <section className="border-b border-zinc-200 bg-gradient-to-b from-white to-zinc-50 px-4 py-20">
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="mb-3 text-sm font-medium uppercase tracking-wide text-amber-700">
+            Prop firm comparison platform
           </p>
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+            Find & compare trusted prop firms
+          </h1>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-zinc-600">
+            Browse firms, read verified reviews, and share your experience — built
+            for your client&apos;s prop trading community.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <Link
+              href="/firms"
+              className="rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white hover:bg-zinc-700"
+            >
+              Browse firms
+            </Link>
+            <Link
+              href="/auth/signup"
+              className="rounded-full border border-zinc-300 bg-white px-6 py-3 text-sm font-medium hover:bg-zinc-100"
+            >
+              Create account
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
+
+      <section className="mx-auto grid max-w-4xl gap-6 px-4 py-12 sm:grid-cols-3">
+        <Stat label="Prop firms" value={firmCount} />
+        <Stat label="Approved reviews" value={reviewCount} />
+        <Stat label="Blog posts" value={postCount} />
+      </section>
+
+      {featured.length > 0 && (
+        <section className="mx-auto max-w-4xl px-4 pb-16">
+          <h2 className="mb-6 text-xl font-semibold">Featured firms</h2>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {featured.map((firm) => (
+              <Link
+                key={firm.id}
+                href={`/firms/${firm.slug}`}
+                className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:border-zinc-300"
+              >
+                <h3 className="font-semibold">{firm.name}</h3>
+                <p className="mt-2 line-clamp-2 text-sm text-zinc-600">
+                  {firm.description}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+    </main>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-xl border border-zinc-200 bg-white p-6 text-center">
+      <p className="text-3xl font-bold">{value}</p>
+      <p className="mt-1 text-sm text-zinc-500">{label}</p>
     </div>
   );
 }

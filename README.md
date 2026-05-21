@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PropCompare — Prop Firm Platform
 
-## Getting Started
+Local development project (Next.js + Prisma + SQLite).
 
-First, run the development server:
+## Quick start
 
-```bash
+```powershell
+cd C:\Projects\prop-platform
+npm install
+copy .env.example .env
+npx prisma migrate dev
+npx prisma db seed
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Demo accounts (after seed)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Role  | Email              | Password  |
+|-------|--------------------|-----------|
+| Admin | admin@prop.local   | admin123  |
+| User  | demo@prop.local    | demo123   |
 
-## Learn More
+## GitHub — checkpoints (αλλαγές)
 
-To learn more about Next.js, take a look at the following resources:
+Το project είναι ήδη Git repo. Κάθε σημαντική αλλαγή:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```powershell
+git add .
+git status
+git commit -m "Describe what you changed"
+git push
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Πρώτη σύνδεση με GitHub
 
-## Deploy on Vercel
+1. Δημιούργησε **κενό** repo στο GitHub (χωρίς README) — π.χ. `prop-platform`
+2. Στο PC:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```powershell
+cd C:\Projects\prop-platform
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/prop-platform.git
+git push -u origin main
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Αντικατέστησε `YOUR_USERNAME` και το όνομα του repo.
+
+### Με GitHub CLI (προαιρετικό)
+
+```powershell
+winget install GitHub.cli
+gh auth login
+gh repo create prop-platform --private --source=. --push
+```
+
+## Docker Postgres (optional)
+
+```powershell
+docker compose up -d
+```
+
+Then set in `.env`:
+
+```
+DATABASE_URL="postgresql://prop:prop_local_dev@localhost:5432/prop_platform"
+```
+
+And change `provider` in `prisma/schema.prisma` to `postgresql`, then `npx prisma migrate dev`.
+
+## What is included
+
+- Sign up / Sign in
+- Prop firms list & detail pages
+- Reviews (login required, admin approval)
+- Blog
+- Admin panel (approve/reject reviews)
