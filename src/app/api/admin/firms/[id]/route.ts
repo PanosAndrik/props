@@ -1,24 +1,7 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
 import { assertAdminApi } from "@/lib/api-admin";
+import { firmSchema, firmInputToDb } from "@/lib/firm-schema";
 import { prisma } from "@/lib/prisma";
-import { slugify } from "@/lib/slug";
-
-const firmSchema = z.object({
-  name: z.string().min(1).optional(),
-  slug: z.string().min(1).optional(),
-  description: z.string().optional().nullable(),
-  websiteUrl: z.string().optional().nullable(),
-  affiliateUrl: z.string().optional().nullable(),
-  discountCode: z.string().optional().nullable(),
-  logoUrl: z.string().optional().nullable(),
-  assetTypes: z.string().optional(),
-  profitSplit: z.string().optional().nullable(),
-  maxDrawdown: z.string().optional().nullable(),
-  minFee: z.coerce.number().optional().nullable(),
-  featured: z.boolean().optional(),
-  published: z.boolean().optional(),
-});
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -34,9 +17,15 @@ export async function PATCH(request: Request, { params }: Props) {
   }
 
   const data = parsed.data;
+  const current = await prisma.propFirm.findUnique({ where: { id } });
+  if (!current) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  const slug = data.slug?.trim() || current.slug;
   if (data.slug) {
     const conflict = await prisma.propFirm.findFirst({
-      where: { slug: data.slug, NOT: { id } },
+      where: { slug, NOT: { id } },
     });
     if (conflict) {
       return NextResponse.json({ error: "Slug already exists" }, { status: 409 });
@@ -45,11 +34,7 @@ export async function PATCH(request: Request, { params }: Props) {
 
   const firm = await prisma.propFirm.update({
     where: { id },
-    data: {
-      ...data,
-      slug: data.slug ?? undefined,
-      name: data.name ?? undefined,
-    },
+    data: firmInputToDb(data, slug),
   });
 
   return NextResponse.json(firm);

@@ -38,6 +38,10 @@ yarn-error.log*
 .env.local
 .env.*.local
 
+# uploaded images (keep folder via .gitkeep)
+/public/uploads/blog/*
+!/public/uploads/blog/.gitkeep
+
 # local database
 /prisma/*.db
 /prisma/*.db-journal

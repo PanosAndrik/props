@@ -53,12 +53,21 @@ export default async function AdminBlogPage() {
                   {post.updatedAt.toLocaleDateString()}
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <Link
-                    href={`/admin/blog/${post.id}/edit`}
-                    className="text-amber-700 hover:underline"
-                  >
-                    Edit
-                  </Link>
+                  <div className="flex justify-end gap-3">
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      target="_blank"
+                      className="text-zinc-600 hover:underline"
+                    >
+                      View
+                    </Link>
+                    <Link
+                      href={`/admin/blog/${post.id}/edit`}
+                      className="text-amber-700 hover:underline"
+                    >
+                      Edit
+                    </Link>
+                  </div>
                 </td>
               </tr>
             ))}

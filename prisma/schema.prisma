@@ -1,81 +1,103 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
-}
-
-enum Role {
-  USER
-  ADMIN
-}
-
-enum ReviewStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
-model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  name         String?
-  passwordHash String
-  role         Role     @default(USER)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  reviews      Review[]
-}
-
-model PropFirm {
-  id          String   @id @default(cuid())
-  name        String
-  slug        String   @unique
-  description String?
-  websiteUrl   String?
-  affiliateUrl String?
-  discountCode String?
-  logoUrl      String?
-  assetTypes  String   @default("forex,crypto")
-  profitSplit String?
-  maxDrawdown String?
-  minFee      Float?
-  featured    Boolean  @default(false)
-  published   Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  reviews     Review[]
-}
-
-model Review {
-  id        String       @id @default(cuid())
-  rating    Int
-  title     String?
-  body      String
-  status    ReviewStatus @default(PENDING)
-  userId    String
-  firmId    String
-  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  firm      PropFirm     @relation(fields: [firmId], references: [id], onDelete: Cascade)
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-
-  @@unique([userId, firmId])
-  @@index([firmId, status])
-  @@index([userId])
-}
-
-model BlogPost {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  excerpt     String?
-  content     String
-  coverImage  String?
-  published   Boolean  @default(false)
-  publishedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  reviews      Review[]
+}
+
+model PropFirm {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  description     String?
+  longOverview    String?
+  websiteUrl      String?
+  affiliateUrl    String?
+  discountCode    String?
+  discountPercent Int?
+  logoUrl         String?
+  countryCode     String?
+  ceoName         String?
+  foundedAt       DateTime?
+  category        String   @default("forex")
+  assetTypes      String   @default("forex,crypto")
+  platforms       String   @default("")
+  profitSplit     String?
+  maxDrawdown     String?
+  drawdownTypes   String?
+  minFee          Float?
+  maxAllocation   String?
+  startingPrice   String?
+  payoutSpeed     String?
+  pros            String?
+  cons            String?
+  rankOrder       Int      @default(999)
+  isNew           Boolean  @default(false)
+  featured        Boolean  @default(false)
+  published       Boolean  @default(true)
+  newsTrading     Boolean  @default(false)
+  weekendHolding  Boolean  @default(false)
+  expertAdvisors  Boolean  @default(false)
+  copyTrading     Boolean  @default(false)
+  noTimeLimit     Boolean  @default(false)
+  consistencyRule Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  reviews         Review[]
+}
+
+model Review {
+  id        String       @id @default(cuid())
+  rating    Int
+  title     String?
+  body      String
+  status    ReviewStatus @default(PENDING)
+  userId    String
+  firmId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firm      PropFirm     @relation(fields: [firmId], references: [id], onDelete: Cascade)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@unique([userId, firmId])
+  @@index([firmId, status])
+  @@index([userId])
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  excerpt     String?
+  content     String
+  coverImage  String?
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+

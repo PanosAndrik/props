@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { CoverImageField } from "./cover-image-field";
 
 export type BlogFormData = {
   id?: string;
@@ -66,7 +67,7 @@ export function BlogForm({ initial }: { initial?: Partial<BlogFormData> }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="max-w-3xl space-y-5">
+    <form onSubmit={onSubmit} noValidate className="max-w-3xl space-y-5">
       {error && (
         <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>
       )}
@@ -101,14 +102,10 @@ export function BlogForm({ initial }: { initial?: Partial<BlogFormData> }) {
         />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-zinc-700">Cover image URL</label>
-        <input
-          className={`${inputClass} mt-1`}
-          value={form.coverImage}
-          onChange={(e) => set("coverImage", e.target.value)}
-        />
-      </div>
+      <CoverImageField
+        value={form.coverImage}
+        onChange={(url) => set("coverImage", url)}
+      />
 
       <div>
         <label className="block text-sm font-medium text-zinc-700">Content *</label>
@@ -122,14 +119,19 @@ export function BlogForm({ initial }: { initial?: Partial<BlogFormData> }) {
         <p className="mt-1 text-xs text-zinc-500">Markdown-style plain text for now.</p>
       </div>
 
-      <label className="flex items-center gap-2 text-sm">
+      <label className="flex items-center gap-2 text-sm font-medium text-zinc-800">
         <input
           type="checkbox"
           checked={form.published}
           onChange={(e) => set("published", e.target.checked)}
         />
-        Published
+        Published (visible on /blog for all visitors)
       </label>
+      {!form.published && (
+        <p className="text-xs text-amber-800">
+          Unchecked = draft. You can preview at /blog/your-slug while logged in as admin.
+        </p>
+      )}
 
       <button
         type="submit"

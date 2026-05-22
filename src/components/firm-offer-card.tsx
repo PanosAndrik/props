@@ -3,6 +3,7 @@ import { CopyCouponButton } from "./copy-coupon-button";
 type Props = {
   firmName: string;
   discountCode?: string | null;
+  discountPercent?: number | null;
   affiliateUrl?: string | null;
   websiteUrl?: string | null;
 };
@@ -10,13 +11,14 @@ type Props = {
 export function FirmOfferCard({
   firmName,
   discountCode,
+  discountPercent,
   affiliateUrl,
   websiteUrl,
 }: Props) {
   const code = discountCode?.trim();
   const visitUrl = (affiliateUrl?.trim() || websiteUrl?.trim()) ?? null;
 
-  if (!code && !visitUrl) return null;
+  if (!code && !visitUrl && !discountPercent) return null;
 
   return (
     <div className="mt-6 overflow-hidden rounded-xl border border-zinc-300 bg-gradient-to-br from-zinc-50 to-white text-zinc-900 shadow-sm">
@@ -32,17 +34,22 @@ export function FirmOfferCard({
       </div>
 
       <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:justify-between">
-        {code ? (
+        {code || discountPercent ? (
           <div className="flex-1">
+            {discountPercent ? (
+              <p className="text-lg font-bold text-emerald-700">{discountPercent}% OFF</p>
+            ) : null}
             <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
               Coupon code
             </p>
-            <div className="mt-2 flex flex-wrap items-center gap-3">
-              <span className="inline-block rounded-lg border-2 border-dashed border-amber-400 bg-amber-50 px-4 py-2 font-mono text-2xl font-bold tracking-wider text-zinc-900">
-                {code}
-              </span>
-              <CopyCouponButton code={code} />
-            </div>
+            {code ? (
+              <div className="mt-2 flex flex-wrap items-center gap-3">
+                <span className="inline-block rounded-lg border-2 border-dashed border-amber-400 bg-amber-50 px-4 py-2 font-mono text-2xl font-bold tracking-wider text-zinc-900">
+                  {code}
+                </span>
+                <CopyCouponButton code={code} />
+              </div>
+            ) : null}
           </div>
         ) : (
           <p className="flex-1 text-sm text-zinc-600">

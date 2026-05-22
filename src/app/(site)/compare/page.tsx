@@ -85,7 +85,11 @@ export default async function ComparePage({ searchParams }: Props) {
                 />
                 <CompareRow
                   label="Discount"
-                  values={ordered.map((f) => f.discountCode ?? "—")}
+                  values={ordered.map((f) =>
+                    f.discountPercent
+                      ? `${f.discountPercent}%${f.discountCode ? ` · ${f.discountCode}` : ""}`
+                      : f.discountCode ?? "—"
+                  )}
                 />
                 <CompareRow
                   label="Link"

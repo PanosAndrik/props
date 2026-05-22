@@ -2,16 +2,28 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import { FirmFilters } from "@/components/firm-filters";
+import { FirmsRankingTable } from "@/components/firms-ranking-table";
+import { parseSortKey, sortFirms, sortLabel } from "@/lib/firm-sort";
 
-type Props = { searchParams: Promise<{ q?: string; asset?: string; featured?: string }> };
+type Props = {
+  searchParams: Promise<{
+    q?: string;
+    asset?: string;
+    featured?: string;
+    category?: string;
+    sort?: string;
+  }>;
+};
 
 export default async function FirmsPage({ searchParams }: Props) {
-  const { q, asset, featured } = await searchParams;
+  const { q, asset, featured, category, sort: sortParam } = await searchParams;
+  const sort = parseSortKey(sortParam);
 
-  const firms = await prisma.propFirm.findMany({
+  const firmsRaw = await prisma.propFirm.findMany({
     where: {
       published: true,
       ...(featured === "1" ? { featured: true } : {}),
+      ...(category ? { category } : {}),
       ...(q
         ? {
             OR: [
@@ -22,11 +34,12 @@ export default async function FirmsPage({ searchParams }: Props) {
         : {}),
       ...(asset ? { assetTypes: { contains: asset } } : {}),
     },
-    orderBy: [{ featured: "desc" }, { name: "asc" }],
     include: {
       reviews: { where: { status: "APPROVED" }, select: { rating: true } },
     },
   });
+
+  const firms = sortFirms(firmsRaw, sort);
 
   const allAssets = await prisma.propFirm.findMany({
     where: { published: true },
@@ -36,15 +49,17 @@ export default async function FirmsPage({ searchParams }: Props) {
     ...new Set(
       allAssets.flatMap((f) => f.assetTypes.split(",").map((a) => a.trim()))
     ),
-  ].filter(Boolean).sort();
+  ]
+    .filter(Boolean)
+    .sort();
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-12">
+    <main className="mx-auto max-w-6xl px-4 py-12">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Prop firms</h1>
+          <h1 className="text-3xl font-bold">Prop firm rankings</h1>
           <p className="mt-2 text-zinc-600">
-            Compare rules, fees, and trader reviews.
+            Compare firms by rating, country, assets, platforms, and promos.
           </p>
         </div>
         <Link
@@ -56,61 +71,23 @@ export default async function FirmsPage({ searchParams }: Props) {
       </div>
 
       <Suspense fallback={null}>
-        <FirmFilters assetOptions={assetOptions} />
+        <FirmFilters assetOptions={assetOptions} showCategory />
       </Suspense>
 
       <p className="mt-4 text-sm text-zinc-500">
-        {firms.length} firm{firms.length !== 1 ? "s" : ""} found
+        {firms.length} firm{firms.length !== 1 ? "s" : ""} · sorted by{" "}
+        <span className="font-medium text-zinc-700">{sortLabel(sort)}</span>
+        {sort === "rank" && (
+          <span className="text-zinc-400">
+            {" "}
+            (set order in admin → Edit firm → Rank order)
+          </span>
+        )}
       </p>
 
-      <ul className="mt-6 space-y-4">
-        {firms.map((firm) => {
-          const ratings = firm.reviews.map((r) => r.rating);
-          const avg =
-            ratings.length > 0
-              ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1)
-              : null;
-
-          return (
-            <li key={firm.id}>
-              <Link
-                href={`/firms/${firm.slug}`}
-                className="block rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:border-amber-200 hover:shadow-md"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h2 className="text-lg font-semibold">
-                      {firm.name}
-                      {firm.featured && (
-                        <span className="ml-2 rounded bg-amber-100 px-2 py-0.5 text-xs text-amber-800">
-                          Featured
-                        </span>
-                      )}
-                    </h2>
-                    <p className="mt-1 text-sm text-zinc-600 line-clamp-2">
-                      {firm.description}
-                    </p>
-                    <p className="mt-2 text-xs text-zinc-500">
-                      {firm.assetTypes} · Split {firm.profitSplit ?? "—"} · From $
-                      {firm.minFee ?? "—"}
-                      {firm.discountCode && (
-                        <span className="ml-2 rounded bg-amber-100 px-1.5 py-0.5 font-mono font-semibold text-amber-900">
-                          {firm.discountCode}
-                        </span>
-                      )}
-                    </p>
-                  </div>
-                  {avg && (
-                    <span className="shrink-0 rounded-full bg-amber-50 px-3 py-1 text-sm font-medium text-amber-800">
-                      ★ {avg}
-                    </span>
-                  )}
-                </div>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      <div className="mt-6">
+        <FirmsRankingTable firms={firms} sort={sort} />
+      </div>
 
       {firms.length === 0 && (
         <p className="mt-8 text-center text-sm text-zinc-500">

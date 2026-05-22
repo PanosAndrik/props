@@ -1,24 +1,8 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
 import { assertAdminApi } from "@/lib/api-admin";
+import { firmSchema, firmInputToDb } from "@/lib/firm-schema";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/slug";
-
-const firmSchema = z.object({
-  name: z.string().min(1),
-  slug: z.string().min(1).optional(),
-  description: z.string().optional().nullable(),
-  websiteUrl: z.string().optional().nullable(),
-  affiliateUrl: z.string().optional().nullable(),
-  discountCode: z.string().optional().nullable(),
-  logoUrl: z.string().optional().nullable(),
-  assetTypes: z.string().default("forex,crypto"),
-  profitSplit: z.string().optional().nullable(),
-  maxDrawdown: z.string().optional().nullable(),
-  minFee: z.coerce.number().optional().nullable(),
-  featured: z.boolean().default(false),
-  published: z.boolean().default(true),
-});
 
 export async function POST(request: Request) {
   const forbidden = await assertAdminApi();
@@ -39,21 +23,7 @@ export async function POST(request: Request) {
   }
 
   const firm = await prisma.propFirm.create({
-    data: {
-      name: data.name,
-      slug,
-      description: data.description || null,
-      websiteUrl: data.websiteUrl || null,
-      affiliateUrl: data.affiliateUrl || null,
-      discountCode: data.discountCode || null,
-      logoUrl: data.logoUrl || null,
-      assetTypes: data.assetTypes,
-      profitSplit: data.profitSplit || null,
-      maxDrawdown: data.maxDrawdown || null,
-      minFee: data.minFee ?? null,
-      featured: data.featured,
-      published: data.published,
-    },
+    data: firmInputToDb(data, slug),
   });
 
   return NextResponse.json(firm);

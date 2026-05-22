@@ -1,12 +1,23 @@
 import Link from "next/link";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { FirmsRankingTable } from "@/components/firms-ranking-table";
+import { sortFirms } from "@/lib/firm-sort";
 
 export default async function Home() {
-  const [firmCount, reviewCount, postCount, featured, latestReviews, latestPosts, allFirms] =
+  const session = await auth();
+  const isAdmin = session?.user?.role === "ADMIN";
+
+  const [rankedFirms, featured, latestReviews, latestPosts, adminStats] =
     await Promise.all([
-      prisma.propFirm.count({ where: { published: true } }),
-      prisma.review.count({ where: { status: "APPROVED" } }),
-      prisma.blogPost.count({ where: { published: true } }),
+      prisma.propFirm
+        .findMany({
+          where: { published: true },
+          include: {
+            reviews: { where: { status: "APPROVED" }, select: { rating: true } },
+          },
+        })
+        .then((firms) => sortFirms(firms, "rank").slice(0, 10)),
       prisma.propFirm.findMany({
         where: { published: true, featured: true },
         take: 3,
@@ -26,27 +37,19 @@ export default async function Home() {
         take: 3,
         orderBy: { publishedAt: "desc" },
       }),
-      prisma.propFirm.findMany({
-        where: { published: true },
-        include: {
-          reviews: {
-            where: { status: "APPROVED" },
-            select: { rating: true },
-          },
-        },
-      }),
+      isAdmin
+        ? Promise.all([
+            prisma.propFirm.count({ where: { published: true } }),
+            prisma.review.count({ where: { status: "APPROVED" } }),
+            prisma.review.count({ where: { status: "PENDING" } }),
+            prisma.blogPost.count({ where: { published: true } }),
+            prisma.user.count(),
+          ])
+        : null,
     ]);
 
-  const topRated = allFirms
-    .map((firm) => {
-      const ratings = firm.reviews.map((r) => r.rating);
-      if (ratings.length === 0) return null;
-      const avg = ratings.reduce((a, b) => a + b, 0) / ratings.length;
-      return { ...firm, avg, reviewCount: ratings.length };
-    })
-    .filter((f): f is NonNullable<typeof f> => f !== null)
-    .sort((a, b) => b.avg - a.avg)
-    .slice(0, 5);
+  const [firmCount, reviewCount, pendingReviews, postCount, userCount] =
+    adminStats ?? [0, 0, 0, 0, 0];
 
   return (
     <main>
@@ -59,7 +62,11 @@ export default async function Home() {
             Find & compare trusted prop firms
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-zinc-600">
-            Real trader reviews, exclusive coupon codes, and side-by-side comparisons.
+            {isAdmin
+              ? "Manage firms, moderate reviews, and publish content from the admin panel."
+              : session
+                ? `Welcome back${session.user?.name ? `, ${session.user.name}` : ""}. Compare firms, use coupon codes, and share your experience.`
+                : "Real trader reviews, exclusive coupon codes, and side-by-side comparisons."}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
@@ -74,53 +81,80 @@ export default async function Home() {
             >
               Compare firms
             </Link>
-            <Link
-              href="/auth/signup"
-              className="rounded-full border border-zinc-300 bg-white px-6 py-3 text-sm font-medium hover:bg-zinc-100"
-            >
-              Create account
-            </Link>
+            {isAdmin ? (
+              <Link
+                href="/admin"
+                className="rounded-full border border-amber-300 bg-amber-50 px-6 py-3 text-sm font-medium text-amber-900 hover:bg-amber-100"
+              >
+                Admin panel
+              </Link>
+            ) : session ? (
+              <Link
+                href="/account"
+                className="rounded-full border border-zinc-300 bg-white px-6 py-3 text-sm font-medium hover:bg-zinc-100"
+              >
+                My account
+              </Link>
+            ) : (
+              <Link
+                href="/auth/signup"
+                className="rounded-full border border-zinc-300 bg-white px-6 py-3 text-sm font-medium hover:bg-zinc-100"
+              >
+                Create account
+              </Link>
+            )}
           </div>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-4xl gap-6 px-4 py-12 sm:grid-cols-3">
-        <Stat label="Prop firms" value={firmCount} />
-        <Stat label="Approved reviews" value={reviewCount} />
-        <Stat label="Blog posts" value={postCount} />
-      </section>
-
-      {topRated.length > 0 && (
-        <section className="mx-auto max-w-4xl px-4 pb-12">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Top rated firms</h2>
-            <Link href="/firms" className="text-sm text-amber-700 hover:underline">
-              View all →
+      {isAdmin && adminStats && (
+        <section className="mx-auto max-w-4xl px-4 py-12">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
+              Platform overview
+            </h2>
+            <Link href="/admin" className="text-sm text-amber-700 hover:underline">
+              Open admin →
             </Link>
           </div>
-          <ul className="mt-4 space-y-2">
-            {topRated.map((firm, i) => (
-              <li key={firm.id}>
-                <Link
-                  href={`/firms/${firm.slug}`}
-                  className="flex items-center justify-between rounded-xl border border-zinc-200 bg-white px-4 py-3 hover:border-zinc-300"
-                >
-                  <span className="font-medium">
-                    <span className="mr-2 text-zinc-400">{i + 1}.</span>
-                    {firm.name}
-                    {firm.discountCode && (
-                      <span className="ml-2 font-mono text-xs text-amber-800">
-                        {firm.discountCode}
-                      </span>
-                    )}
-                  </span>
-                  <span className="text-sm font-medium text-amber-700">
-                    ★ {firm.avg.toFixed(1)} ({firm.reviewCount})
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            <AdminStat label="Published firms" value={firmCount} href="/admin/firms" />
+            <AdminStat label="Approved reviews" value={reviewCount} href="/admin/reviews?status=APPROVED" />
+            <AdminStat
+              label="Pending reviews"
+              value={pendingReviews}
+              href="/admin/reviews?status=PENDING"
+              highlight={pendingReviews > 0}
+            />
+            <AdminStat label="Blog posts" value={postCount} href="/admin/blog" />
+            <AdminStat label="Users" value={userCount} href="/admin/users" />
+          </div>
+        </section>
+      )}
+
+      {rankedFirms.length > 0 && (
+        <section className={`mx-auto max-w-6xl px-4 pb-12 ${isAdmin ? "" : "pt-12"}`}>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-xl font-semibold">Prop firm rankings</h2>
+            <div className="flex flex-wrap gap-2 text-sm">
+              <Link href="/firms?sort=rating" className="text-amber-700 hover:underline">
+                By rating
+              </Link>
+              <span className="text-zinc-300">·</span>
+              <Link href="/firms?sort=allocation" className="text-amber-700 hover:underline">
+                By allocation
+              </Link>
+              <span className="text-zinc-300">·</span>
+              <Link href="/firms?sort=fee" className="text-amber-700 hover:underline">
+                By fee
+              </Link>
+              <span className="text-zinc-300">·</span>
+              <Link href="/firms" className="font-medium text-zinc-700 hover:underline">
+                Full table →
+              </Link>
+            </div>
+          </div>
+          <FirmsRankingTable firms={rankedFirms} sort="rank" />
         </section>
       )}
 
@@ -203,11 +237,26 @@ export default async function Home() {
   );
 }
 
-function Stat({ label, value }: { label: string; value: number }) {
+function AdminStat({
+  label,
+  value,
+  href,
+  highlight,
+}: {
+  label: string;
+  value: number;
+  href: string;
+  highlight?: boolean;
+}) {
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white p-6 text-center">
-      <p className="text-3xl font-bold">{value}</p>
-      <p className="mt-1 text-sm text-zinc-500">{label}</p>
-    </div>
+    <Link
+      href={href}
+      className={`rounded-xl border bg-white p-5 text-center transition hover:shadow-md ${
+        highlight ? "border-amber-300 ring-1 ring-amber-200" : "border-zinc-200"
+      }`}
+    >
+      <p className="text-2xl font-bold text-zinc-900">{value}</p>
+      <p className="mt-1 text-xs font-medium text-zinc-500">{label}</p>
+    </Link>
   );
 }

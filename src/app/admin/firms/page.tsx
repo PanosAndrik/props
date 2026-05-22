@@ -27,6 +27,7 @@ export default async function AdminFirmsPage() {
           <thead className="border-b border-zinc-200 bg-zinc-50 text-xs uppercase text-zinc-500">
             <tr>
               <th className="px-4 py-3">Name</th>
+              <th className="px-4 py-3">Rank</th>
               <th className="px-4 py-3">Coupon</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3">Reviews</th>
@@ -40,6 +41,7 @@ export default async function AdminFirmsPage() {
                   <p className="font-medium">{firm.name}</p>
                   <p className="text-xs text-zinc-500">/firms/{firm.slug}</p>
                 </td>
+                <td className="px-4 py-3 font-mono text-zinc-600">{firm.rankOrder}</td>
                 <td className="px-4 py-3">
                   {firm.discountCode ? (
                     <span className="font-mono text-xs font-semibold text-amber-800">
