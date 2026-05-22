@@ -93,6 +93,11 @@ export default async function FirmsPage({ searchParams }: Props) {
                     <p className="mt-2 text-xs text-zinc-500">
                       {firm.assetTypes} · Split {firm.profitSplit ?? "—"} · From $
                       {firm.minFee ?? "—"}
+                      {firm.discountCode && (
+                        <span className="ml-2 rounded bg-amber-100 px-1.5 py-0.5 font-mono font-semibold text-amber-900">
+                          {firm.discountCode}
+                        </span>
+                      )}
                     </p>
                   </div>
                   {avg && (

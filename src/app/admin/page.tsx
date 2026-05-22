@@ -46,7 +46,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="mt-4">
-        <StatCard label="Registered users" value={userCount} />
+        <StatCard label="Registered users" value={userCount} href="/admin/users" />
       </div>
 
       <section className="mt-12 rounded-xl border border-zinc-200 bg-white p-6">

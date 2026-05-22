@@ -24,15 +24,16 @@ Open http://localhost:3000
 
 ## Public site
 
-- **Home** — stats + featured firms
+- **Home** — stats, top rated firms, featured, latest reviews & blog
+- **/about** — about page
 - **/firms** — list with search, asset filter, featured filter
-- **/firms/[slug]** — firm detail + reviews (login to submit)
+- **/firms/[slug]** — firm detail, discount code, affiliate link, reviews
 - **/compare** — pick 2–3 firms, side-by-side table
 - **/blog** — published posts
 
 ## Admin panel (`/admin`)
 
-Requires **ADMIN** role. Sidebar: Dashboard, Firms, Blog, Reviews.
+Requires **ADMIN** role. Sidebar: Dashboard, Firms, Blog, Reviews, Users.
 
 | Section   | Features |
 |-----------|----------|
@@ -40,6 +41,11 @@ Requires **ADMIN** role. Sidebar: Dashboard, Firms, Blog, Reviews.
 | Firms     | List, add, edit, delete, featured/published toggles |
 | Blog      | List, create, edit, delete, publish draft |
 | Reviews   | All reviews, filter by status, approve/reject |
+| Users     | List registered users |
+
+## Production deploy
+
+See [DEPLOY.md](./DEPLOY.md) (Vercel + Postgres).
 
 ## GitHub — checkpoints
 
@@ -60,7 +66,4 @@ docker compose up -d
 
 Set `DATABASE_URL` to Postgres and change `provider` in `prisma/schema.prisma` to `postgresql`, then `npx prisma migrate dev`.
 
-## Production (later)
-
-- Host on **Vercel** + **Neon/Supabase** Postgres
-- Set `AUTH_SECRET`, `AUTH_URL`, `DATABASE_URL` in hosting env
+- **/account** — edit name, view your reviews (one review per firm max)

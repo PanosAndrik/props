@@ -84,12 +84,17 @@ export default async function ComparePage({ searchParams }: Props) {
                   )}
                 />
                 <CompareRow
-                  label="Website"
-                  values={ordered.map((f) =>
-                    f.websiteUrl ? (
+                  label="Discount"
+                  values={ordered.map((f) => f.discountCode ?? "—")}
+                />
+                <CompareRow
+                  label="Link"
+                  values={ordered.map((f) => {
+                    const url = f.affiliateUrl ?? f.websiteUrl;
+                    return url ? (
                       <a
                         key={f.id}
-                        href={f.websiteUrl}
+                        href={url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-amber-700 hover:underline"
@@ -98,8 +103,8 @@ export default async function ComparePage({ searchParams }: Props) {
                       </a>
                     ) : (
                       "—"
-                    )
-                  )}
+                    );
+                  })}
                 />
               </tbody>
             </table>

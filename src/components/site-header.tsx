@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { auth } from "@/lib/auth";
+import { UserMenu } from "@/components/user-menu";
 
 export async function SiteHeader() {
   const session = await auth();
@@ -21,13 +22,11 @@ export async function SiteHeader() {
           <Link href="/blog" className="hover:text-zinc-900">
             Blog
           </Link>
-          {isAdmin && (
-            <Link href="/admin" className="text-amber-700 hover:text-amber-900">
-              Admin
-            </Link>
-          )}
+          <Link href="/about" className="hover:text-zinc-900">
+            About
+          </Link>
           {session ? (
-            <span className="text-zinc-500">{session.user?.email}</span>
+            <UserMenu email={session.user?.email} isAdmin={isAdmin} />
           ) : (
             <>
               <Link href="/auth/signin" className="hover:text-zinc-900">

@@ -9,6 +9,8 @@ export type FirmFormData = {
   slug: string;
   description: string;
   websiteUrl: string;
+  affiliateUrl: string;
+  discountCode: string;
   logoUrl: string;
   assetTypes: string;
   profitSplit: string;
@@ -23,6 +25,8 @@ const empty: FirmFormData = {
   slug: "",
   description: "",
   websiteUrl: "",
+  affiliateUrl: "",
+  discountCode: "",
   logoUrl: "",
   assetTypes: "forex,crypto",
   profitSplit: "",
@@ -54,6 +58,8 @@ export function FirmForm({ initial }: { initial?: Partial<FirmFormData> }) {
       minFee: form.minFee ? Number(form.minFee) : null,
       description: form.description || null,
       websiteUrl: form.websiteUrl || null,
+      affiliateUrl: form.affiliateUrl || null,
+      discountCode: form.discountCode || null,
       logoUrl: form.logoUrl || null,
       profitSplit: form.profitSplit || null,
       maxDrawdown: form.maxDrawdown || null,
@@ -112,6 +118,39 @@ export function FirmForm({ initial }: { initial?: Partial<FirmFormData> }) {
           onChange={(e) => set("description", e.target.value)}
         />
       </Field>
+
+      <fieldset className="space-y-4 rounded-xl border-2 border-amber-200 bg-amber-50/40 p-5">
+        <legend className="px-1 text-sm font-semibold text-zinc-900">
+          Coupon &amp; offer (public firm page)
+        </legend>
+        <p className="text-xs text-zinc-600">
+          The coupon appears in the &quot;Ready to try [firm]?&quot; box on the firm
+          page. Leave empty to hide the code (only the visit link will show).
+        </p>
+        <Field
+          label="Coupon / discount code"
+          hint="e.g. FTMO10, PROP15 — visitors can copy this code"
+        >
+          <input
+            className={`${inputClass} font-mono text-base uppercase`}
+            value={form.discountCode}
+            onChange={(e) => set("discountCode", e.target.value.toUpperCase())}
+            placeholder="YOUR-CODE"
+          />
+        </Field>
+        <Field
+          label="Affiliate / partner link"
+          hint="Optional tracked URL; if empty, the website URL below is used"
+        >
+          <input
+            className={inputClass}
+            type="url"
+            value={form.affiliateUrl}
+            onChange={(e) => set("affiliateUrl", e.target.value)}
+            placeholder="https://..."
+          />
+        </Field>
+      </fieldset>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Website URL">

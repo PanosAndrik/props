@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AdminNav } from "./admin-nav";
+import { SignOutButton } from "@/components/sign-out-button";
 
 export function AdminShell({
   children,
@@ -18,12 +19,15 @@ export function AdminShell({
         <div className="mt-8 flex-1">
           <AdminNav />
         </div>
-        <Link
-          href="/"
-          className="mt-6 block rounded-lg border border-zinc-700 px-3 py-2 text-center text-sm text-zinc-300 hover:bg-zinc-800"
-        >
-          ← Back to site
-        </Link>
+        <div className="mt-6 space-y-2">
+          <Link
+            href="/"
+            className="block rounded-lg border border-zinc-700 px-3 py-2 text-center text-sm text-zinc-300 hover:bg-zinc-800"
+          >
+            ← Back to site
+          </Link>
+          <SignOutButton variant="admin" />
+        </div>
       </aside>
       <div className="flex flex-1 flex-col">
         {title && (

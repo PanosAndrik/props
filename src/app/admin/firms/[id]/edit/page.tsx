@@ -27,6 +27,8 @@ export default async function EditFirmPage({ params }: Props) {
             slug: firm.slug,
             description: firm.description ?? "",
             websiteUrl: firm.websiteUrl ?? "",
+            affiliateUrl: firm.affiliateUrl ?? "",
+            discountCode: firm.discountCode ?? "",
             logoUrl: firm.logoUrl ?? "",
             assetTypes: firm.assetTypes,
             profitSplit: firm.profitSplit ?? "",

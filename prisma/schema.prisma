@@ -34,8 +34,10 @@ model PropFirm {
   name        String
   slug        String   @unique
   description String?
-  websiteUrl  String?
-  logoUrl     String?
+  websiteUrl   String?
+  affiliateUrl String?
+  discountCode String?
+  logoUrl      String?
   assetTypes  String   @default("forex,crypto")
   profitSplit String?
   maxDrawdown String?
@@ -60,6 +62,7 @@ model Review {
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
 
+  @@unique([userId, firmId])
   @@index([firmId, status])
   @@index([userId])
 }

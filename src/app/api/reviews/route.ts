@@ -30,6 +30,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Firm not found" }, { status: 404 });
     }
 
+    const existing = await prisma.review.findUnique({
+      where: {
+        userId_firmId: {
+          userId: session.user.id,
+          firmId: parsed.data.firmId,
+        },
+      },
+    });
+    if (existing) {
+      return NextResponse.json(
+        { error: "You already submitted a review for this firm." },
+        { status: 409 }
+      );
+    }
+
     await prisma.review.create({
       data: {
         ...parsed.data,

@@ -44,16 +44,16 @@ export function ReviewForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-4 rounded-xl border border-zinc-200 bg-white p-5"
+      className="mt-4 rounded-xl border border-zinc-300 bg-white p-5 text-zinc-900 shadow-sm"
     >
-      <p className="text-sm font-medium">Review {firmName}</p>
+      <p className="text-sm font-semibold text-zinc-900">Review {firmName}</p>
 
-      <label className="mt-3 block text-sm text-zinc-600">
+      <label className="mt-3 block text-sm text-zinc-700">
         Rating
         <select
           value={rating}
           onChange={(e) => setRating(Number(e.target.value))}
-          className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2"
+          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900"
         >
           {[5, 4, 3, 2, 1].map((n) => (
             <option key={n} value={n}>
@@ -63,16 +63,16 @@ export function ReviewForm({
         </select>
       </label>
 
-      <label className="mt-3 block text-sm text-zinc-600">
+      <label className="mt-3 block text-sm text-zinc-700">
         Title (optional)
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2"
+          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900"
         />
       </label>
 
-      <label className="mt-3 block text-sm text-zinc-600">
+      <label className="mt-3 block text-sm text-zinc-700">
         Your review
         <textarea
           required
@@ -80,14 +80,14 @@ export function ReviewForm({
           value={body}
           onChange={(e) => setBody(e.target.value)}
           rows={4}
-          className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2"
+          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900"
         />
       </label>
 
       <button
         type="submit"
         disabled={loading}
-        className="mt-4 rounded-full bg-zinc-900 px-5 py-2 text-sm font-medium text-white disabled:opacity-50"
+        className="mt-4 rounded-lg bg-zinc-900 px-6 py-2.5 text-sm font-semibold text-white hover:bg-zinc-700 disabled:opacity-50"
       >
         {loading ? "Submitting…" : "Submit review"}
       </button>

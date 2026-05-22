@@ -36,6 +36,8 @@ async function main() {
       description:
         "One of the most popular prop firms. Forex and indices challenges with clear rules.",
       websiteUrl: "https://ftmo.com",
+      affiliateUrl: "https://ftmo.com",
+      discountCode: "PROP10",
       assetTypes: "forex,indices",
       profitSplit: "80-90%",
       maxDrawdown: "10%",
@@ -47,6 +49,7 @@ async function main() {
       slug: "funding-pips",
       description: "Fast-growing firm with multiple challenge types and competitive pricing.",
       websiteUrl: "https://fundingpips.com",
+      discountCode: "FUNDING5",
       assetTypes: "forex,crypto",
       profitSplit: "80-100%",
       maxDrawdown: "8-10%",
@@ -63,6 +66,7 @@ async function main() {
       maxDrawdown: "6%",
       minFee: 95,
       featured: false,
+      discountCode: "FIVE5",
     },
   ];
 
@@ -79,10 +83,11 @@ async function main() {
 
   if (ftmo && demo) {
     await prisma.review.upsert({
-      where: { id: "seed-review-ftmo" },
+      where: {
+        userId_firmId: { userId: demo.id, firmId: ftmo.id },
+      },
       update: {},
       create: {
-        id: "seed-review-ftmo",
         rating: 5,
         title: "Solid experience",
         body: "Clear rules, fast support, payouts as promised. Good for disciplined traders.",

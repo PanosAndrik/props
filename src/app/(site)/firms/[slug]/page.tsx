@@ -1,14 +1,37 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ReviewForm } from "./review-form";
+import { FirmOfferCard } from "@/components/firm-offer-card";
 
 type Props = { params: Promise<{ slug: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const firm = await prisma.propFirm.findUnique({
+    where: { slug, published: true },
+    select: { name: true, description: true },
+  });
+  if (!firm) return { title: "Firm not found" };
+  return {
+    title: `${firm.name} — Reviews & Coupon | PropCompare`,
+    description: firm.description ?? `Compare ${firm.name} rules, fees, and trader reviews.`,
+  };
+}
 
 export default async function FirmDetailPage({ params }: Props) {
   const { slug } = await params;
   const session = await auth();
+
+  const userReview =
+    session?.user?.id
+      ? await prisma.review.findFirst({
+          where: { firm: { slug }, userId: session.user.id },
+          select: { status: true, createdAt: true },
+        })
+      : null;
 
   const firm = await prisma.propFirm.findUnique({
     where: { slug, published: true },
@@ -65,32 +88,17 @@ export default async function FirmDetailPage({ params }: Props) {
         </div>
       </dl>
 
-      {firm.websiteUrl && (
-        <a
-          href={firm.websiteUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 inline-block text-sm font-medium text-amber-700 hover:underline"
-        >
-          Visit official site →
-        </a>
-      )}
+      <FirmOfferCard
+        firmName={firm.name}
+        discountCode={firm.discountCode}
+        affiliateUrl={firm.affiliateUrl}
+        websiteUrl={firm.websiteUrl}
+      />
 
       <section className="mt-12">
         <h2 className="text-xl font-semibold">Reviews</h2>
 
-        {session ? (
-          <ReviewForm firmId={firm.id} firmName={firm.name} />
-        ) : (
-          <p className="mt-4 rounded-lg bg-zinc-100 p-4 text-sm text-zinc-600">
-            <Link href="/auth/signin" className="font-medium text-zinc-900 underline">
-              Sign in
-            </Link>{" "}
-            to leave a review (pending admin approval).
-          </p>
-        )}
-
-        <ul className="mt-6 space-y-4">
+        <ul className="mt-4 space-y-4">
           {firm.reviews.map((review) => (
             <li
               key={review.id}
@@ -111,9 +119,33 @@ export default async function FirmDetailPage({ params }: Props) {
             </li>
           ))}
           {firm.reviews.length === 0 && (
-            <p className="text-sm text-zinc-500">No approved reviews yet.</p>
+            <p className="rounded-xl border border-dashed border-zinc-200 bg-zinc-50 p-6 text-center text-sm text-zinc-500">
+              No reviews yet. Be the first to share your experience below.
+            </p>
           )}
         </ul>
+
+        <div className="mt-10 border-t border-zinc-200 pt-8">
+          <h3 className="text-lg font-semibold text-zinc-900">Write a review</h3>
+          {userReview ? (
+            <p className="mt-4 rounded-lg border border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-700">
+              You already submitted a review for {firm.name}
+              {userReview.status === "PENDING" && " — waiting for admin approval."}
+              {userReview.status === "APPROVED" && " — it is published above."}
+              {userReview.status === "REJECTED" &&
+                " — it was not approved. Contact support if you believe this was a mistake."}
+            </p>
+          ) : session ? (
+            <ReviewForm firmId={firm.id} firmName={firm.name} />
+          ) : (
+            <p className="mt-4 rounded-lg bg-zinc-100 p-4 text-sm text-zinc-600">
+              <Link href="/auth/signin" className="font-medium text-zinc-900 underline">
+                Sign in
+              </Link>{" "}
+              to submit a review (pending admin approval).
+            </p>
+          )}
+        </div>
       </section>
     </main>
   );
