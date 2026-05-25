@@ -3,6 +3,9 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ProfileForm } from "@/components/profile-form";
+import { FirmLogo } from "@/components/firm-logo";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { FavoriteButton } from "@/components/favorite-button";
 
 const statusLabels = {
   PENDING: { text: "Pending approval", className: "bg-amber-100 text-amber-800" },
@@ -23,6 +26,20 @@ export default async function AccountPage() {
         include: { firm: { select: { name: true, slug: true } } },
         orderBy: { createdAt: "desc" },
       },
+      favorites: {
+        include: {
+          firm: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              logoUrl: true,
+              description: true,
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      },
     },
   });
 
@@ -30,8 +47,9 @@ export default async function AccountPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-12">
+      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Account" }]} />
       <h1 className="text-3xl font-bold">My account</h1>
-      <p className="mt-2 text-zinc-600">Your profile and submitted reviews.</p>
+      <p className="mt-2 text-zinc-600">Your profile, saved firms, and reviews.</p>
 
       <section className="mt-8 rounded-xl border border-zinc-200 bg-white p-6">
         <h2 className="font-semibold text-zinc-900">Profile</h2>
@@ -40,6 +58,48 @@ export default async function AccountPage() {
           Member since {user.createdAt.toLocaleDateString()}
         </p>
         <ProfileForm initialName={user.name ?? ""} />
+      </section>
+
+      <section className="mt-8">
+        <h2 className="font-semibold text-zinc-900">Saved firms</h2>
+        {user.favorites.length === 0 ? (
+          <p className="mt-4 text-sm text-zinc-500">
+            No saved firms yet. Open a firm page and tap &quot;Save firm&quot;.{" "}
+            <Link href="/firms" className="text-amber-700 underline">
+              Browse firms
+            </Link>
+          </p>
+        ) : (
+          <ul className="mt-4 space-y-3">
+            {user.favorites.map((fav) => (
+              <li
+                key={fav.id}
+                className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white p-4"
+              >
+                <FirmLogo name={fav.firm.name} logoUrl={fav.firm.logoUrl} size="sm" />
+                <div className="min-w-0 flex-1">
+                  <Link
+                    href={`/firms/${fav.firm.slug}`}
+                    className="font-medium hover:underline"
+                  >
+                    {fav.firm.name}
+                  </Link>
+                  {fav.firm.description && (
+                    <p className="mt-0.5 truncate text-sm text-zinc-500">
+                      {fav.firm.description}
+                    </p>
+                  )}
+                </div>
+                <FavoriteButton
+                  firmId={fav.firm.id}
+                  firmName={fav.firm.name}
+                  initialFavorited
+                  isLoggedIn
+                />
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <section className="mt-8">

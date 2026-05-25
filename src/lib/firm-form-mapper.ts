@@ -37,6 +37,9 @@ export type FirmFormState = {
   copyTrading: boolean;
   noTimeLimit: boolean;
   consistencyRule: boolean;
+  instantFunded: boolean;
+  showInOffers: boolean;
+  brandColor: string;
 };
 
 export const emptyFirmForm: FirmFormState = {
@@ -74,6 +77,9 @@ export const emptyFirmForm: FirmFormState = {
   copyTrading: false,
   noTimeLimit: false,
   consistencyRule: false,
+  instantFunded: false,
+  showInOffers: false,
+  brandColor: "",
 };
 
 export function firmToForm(firm: PropFirm): FirmFormState {
@@ -113,6 +119,9 @@ export function firmToForm(firm: PropFirm): FirmFormState {
     copyTrading: firm.copyTrading,
     noTimeLimit: firm.noTimeLimit,
     consistencyRule: firm.consistencyRule,
+    instantFunded: firm.instantFunded,
+    showInOffers: firm.showInOffers,
+    brandColor: firm.brandColor ?? "",
   };
 }
 
@@ -152,5 +161,8 @@ export function formToPayload(form: FirmFormState) {
     copyTrading: form.copyTrading,
     noTimeLimit: form.noTimeLimit,
     consistencyRule: form.consistencyRule,
+    instantFunded: form.instantFunded,
+    showInOffers: form.showInOffers,
+    brandColor: form.brandColor || null,
   };
 }

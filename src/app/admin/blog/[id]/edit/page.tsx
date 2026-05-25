@@ -25,6 +25,9 @@ export default async function EditBlogPage({ params }: Props) {
             excerpt: post.excerpt ?? "",
             content: post.content,
             coverImage: post.coverImage ?? "",
+            category: post.category ?? "",
+            readTimeMinutes: post.readTimeMinutes?.toString() ?? "",
+            difficulty: post.difficulty ?? "",
             published: post.published,
           }}
         />

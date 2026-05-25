@@ -1,9 +1,18 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
+import { buildFirmWhere, firmIncludeReviews } from "@/lib/firm-query";
 import { FirmFilters } from "@/components/firm-filters";
+import { FirmListFilterPills } from "@/components/firm-list-filter-pills";
 import { FirmsRankingTable } from "@/components/firms-ranking-table";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { parseSortKey, sortFirms, sortLabel } from "@/lib/firm-sort";
+
+export const metadata: Metadata = {
+  title: "Prop Firm Rankings | PropCompare",
+  description: "Browse and filter prop firms by rating, fees, assets, and coupons.",
+};
 
 type Props = {
   searchParams: Promise<{
@@ -12,31 +21,20 @@ type Props = {
     featured?: string;
     category?: string;
     sort?: string;
+    coupon?: string;
+    maxFee?: string;
+    instant?: string;
   }>;
 };
 
 export default async function FirmsPage({ searchParams }: Props) {
-  const { q, asset, featured, category, sort: sortParam } = await searchParams;
+  const { q, asset, featured, category, sort: sortParam, coupon, maxFee, instant } =
+    await searchParams;
   const sort = parseSortKey(sortParam);
 
   const firmsRaw = await prisma.propFirm.findMany({
-    where: {
-      published: true,
-      ...(featured === "1" ? { featured: true } : {}),
-      ...(category ? { category } : {}),
-      ...(q
-        ? {
-            OR: [
-              { name: { contains: q } },
-              { description: { contains: q } },
-            ],
-          }
-        : {}),
-      ...(asset ? { assetTypes: { contains: asset } } : {}),
-    },
-    include: {
-      reviews: { where: { status: "APPROVED" }, select: { rating: true } },
-    },
+    where: buildFirmWhere({ q, asset, featured, category, coupon, maxFee, instant }),
+    include: firmIncludeReviews,
   });
 
   const firms = sortFirms(firmsRaw, sort);
@@ -54,10 +52,11 @@ export default async function FirmsPage({ searchParams }: Props) {
     .sort();
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-12">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+    <main className="mx-auto w-full min-w-0 max-w-6xl px-4 py-8 sm:py-12">
+      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Firms" }]} />
+      <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Prop firm rankings</h1>
+          <h1 className="text-2xl font-bold sm:text-3xl">Prop firm rankings</h1>
           <p className="mt-2 text-zinc-600">
             Compare firms by rating, country, assets, platforms, and promos.
           </p>
@@ -70,19 +69,19 @@ export default async function FirmsPage({ searchParams }: Props) {
         </Link>
       </div>
 
+      <Suspense fallback={<div className="mt-4 h-10 animate-pulse rounded-lg bg-zinc-100" />}>
+        <div className="mt-4">
+          <FirmListFilterPills />
+        </div>
+      </Suspense>
+
       <Suspense fallback={null}>
-        <FirmFilters assetOptions={assetOptions} showCategory />
+        <FirmFilters assetOptions={assetOptions} showCategory={false} showSort={false} />
       </Suspense>
 
       <p className="mt-4 text-sm text-zinc-500">
         {firms.length} firm{firms.length !== 1 ? "s" : ""} · sorted by{" "}
         <span className="font-medium text-zinc-700">{sortLabel(sort)}</span>
-        {sort === "rank" && (
-          <span className="text-zinc-400">
-            {" "}
-            (set order in admin → Edit firm → Rank order)
-          </span>
-        )}
       </p>
 
       <div className="mt-6">
@@ -90,12 +89,12 @@ export default async function FirmsPage({ searchParams }: Props) {
       </div>
 
       {firms.length === 0 && (
-        <p className="mt-8 text-center text-sm text-zinc-500">
-          No firms match your filters.{" "}
-          <Link href="/firms" className="text-amber-700 underline">
-            Clear filters
+        <div className="mt-8 rounded-xl border border-zinc-200 bg-white px-6 py-12 text-center">
+          <p className="font-medium text-zinc-800">No firms match your filters</p>
+          <Link href="/firms" className="mt-4 inline-block text-sm text-amber-700 underline">
+            Clear all filters
           </Link>
-        </p>
+        </div>
       )}
     </main>
   );

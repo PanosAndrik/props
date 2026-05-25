@@ -18,6 +18,11 @@ export const metadata: Metadata = {
   description: "Compare prop trading firms, read reviews, and find the best match.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

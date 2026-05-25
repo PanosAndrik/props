@@ -1,6 +1,8 @@
 import { CopyCouponButton } from "./copy-coupon-button";
+import { affiliateOutUrl } from "@/lib/affiliate-out";
 
 type Props = {
+  slug: string;
   firmName: string;
   discountCode?: string | null;
   discountPercent?: number | null;
@@ -9,6 +11,7 @@ type Props = {
 };
 
 export function FirmOfferCard({
+  slug,
   firmName,
   discountCode,
   discountPercent,
@@ -16,9 +19,10 @@ export function FirmOfferCard({
   websiteUrl,
 }: Props) {
   const code = discountCode?.trim();
-  const visitUrl = (affiliateUrl?.trim() || websiteUrl?.trim()) ?? null;
+  const hasOutbound = !!(affiliateUrl?.trim() || websiteUrl?.trim());
+  const visitHref = hasOutbound ? affiliateOutUrl(slug, "firm-offer") : null;
 
-  if (!code && !visitUrl && !discountPercent) return null;
+  if (!code && !visitHref && !discountPercent) return null;
 
   return (
     <div className="mt-6 overflow-hidden rounded-xl border border-zinc-300 bg-gradient-to-br from-zinc-50 to-white text-zinc-900 shadow-sm">
@@ -57,9 +61,9 @@ export function FirmOfferCard({
           </p>
         )}
 
-        {visitUrl && (
+        {visitHref && (
           <a
-            href={visitUrl}
+            href={visitHref}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex shrink-0 items-center justify-center rounded-lg bg-zinc-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-zinc-700"

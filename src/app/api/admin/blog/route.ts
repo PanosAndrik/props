@@ -10,6 +10,9 @@ const postSchema = z.object({
   excerpt: z.string().optional().nullable(),
   content: z.string().min(1),
   coverImage: z.string().optional().nullable(),
+  category: z.string().optional().nullable(),
+  readTimeMinutes: z.coerce.number().int().min(1).optional().nullable(),
+  difficulty: z.string().optional().nullable(),
   published: z.boolean().default(false),
 });
 
@@ -38,6 +41,9 @@ export async function POST(request: Request) {
       excerpt: data.excerpt || null,
       content: data.content,
       coverImage: data.coverImage || null,
+      category: data.category || null,
+      readTimeMinutes: data.readTimeMinutes ?? null,
+      difficulty: data.difficulty || null,
       published: data.published,
       publishedAt: data.published ? new Date() : null,
     },

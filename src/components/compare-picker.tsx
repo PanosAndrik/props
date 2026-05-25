@@ -1,31 +1,49 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { compareHref, getCompareSlugs, setCompareSlugs } from "@/lib/compare-storage";
+import { useToast } from "@/components/toast-provider";
 
 type FirmOption = { slug: string; name: string };
 
 export function ComparePicker({ firms }: { firms: FirmOption[] }) {
   const router = useRouter();
+  const toast = useToast();
   const [selected, setSelected] = useState<string[]>([]);
 
+  useEffect(() => {
+    setSelected(getCompareSlugs());
+    const onUpdate = () => setSelected(getCompareSlugs());
+    window.addEventListener("compare-updated", onUpdate);
+    return () => window.removeEventListener("compare-updated", onUpdate);
+  }, []);
+
   function toggle(slug: string) {
-    setSelected((prev) => {
-      if (prev.includes(slug)) return prev.filter((s) => s !== slug);
-      if (prev.length >= 3) return prev;
-      return [...prev, slug];
-    });
+    const cur = getCompareSlugs();
+    let next: string[];
+    if (cur.includes(slug)) {
+      next = cur.filter((s) => s !== slug);
+    } else if (cur.length >= 3) {
+      toast("You can compare up to 3 firms. Remove one first.");
+      return;
+    } else {
+      next = [...cur, slug];
+    }
+    setCompareSlugs(next);
+    setSelected(next);
   }
 
   function compare() {
     if (selected.length < 2) return;
-    router.push(`/compare?firms=${selected.join(",")}`);
+    router.push(compareHref(selected));
   }
 
   return (
     <div className="mt-8">
       <p className="text-sm text-zinc-600">
-        Select 2–3 firms to compare side by side ({selected.length}/3 selected)
+        Select 2–3 firms to compare side by side ({selected.length}/3 selected). Selection is
+        saved in your browser.
       </p>
       <ul className="mt-4 grid gap-2 sm:grid-cols-2">
         {firms.map((firm) => {

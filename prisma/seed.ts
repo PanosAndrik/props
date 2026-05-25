@@ -69,6 +69,8 @@ async function main() {
       isNew: false,
       noTimeLimit: true,
       expertAdvisors: true,
+      showInOffers: true,
+      brandColor: "blue",
       pros: prosFtmo,
       cons: consFtmo,
     },
@@ -95,6 +97,8 @@ async function main() {
       payoutSpeed: "On demand",
       featured: true,
       isNew: true,
+      showInOffers: true,
+      brandColor: "orange",
       newsTrading: true,
       weekendHolding: true,
     },
@@ -118,6 +122,8 @@ async function main() {
       startingPrice: "$95",
       payoutSpeed: "Weekly",
       featured: false,
+      showInOffers: true,
+      brandColor: "green",
     },
   ];
 
@@ -131,6 +137,49 @@ async function main() {
 
   const ftmo = await prisma.propFirm.findUnique({ where: { slug: "ftmo" } });
   const demo = await prisma.user.findUnique({ where: { email: "demo@prop.local" } });
+
+  if (ftmo) {
+    const ftmoChallenges = [
+      {
+        name: "2-Step Challenge $10K",
+        accountSize: "$10K",
+        price: 155,
+        profitTarget: "10% / 5%",
+        maxDrawdown: "10%",
+        profitSplit: "80/20",
+        sortOrder: 1,
+      },
+      {
+        name: "2-Step Challenge $100K",
+        accountSize: "$100K",
+        price: 1080,
+        profitTarget: "10% / 5%",
+        maxDrawdown: "10%",
+        profitSplit: "80/20",
+        sortOrder: 2,
+      },
+      {
+        name: "Swing Challenge $50K",
+        accountSize: "$50K",
+        price: 495,
+        profitTarget: "10%",
+        maxDrawdown: "10%",
+        profitSplit: "80/20",
+        sortOrder: 3,
+      },
+    ];
+
+    for (const ch of ftmoChallenges) {
+      const existing = await prisma.firmChallenge.findFirst({
+        where: { firmId: ftmo.id, name: ch.name },
+      });
+      if (existing) {
+        await prisma.firmChallenge.update({ where: { id: existing.id }, data: ch });
+      } else {
+        await prisma.firmChallenge.create({ data: { firmId: ftmo.id, ...ch } });
+      }
+    }
+  }
 
   if (ftmo && demo) {
     await prisma.review.upsert({
@@ -149,19 +198,89 @@ async function main() {
     });
   }
 
-  await prisma.blogPost.upsert({
-    where: { slug: "best-prop-firms-2026" },
-    update: {},
-    create: {
+  const blogPosts = [
+    {
       title: "Best Prop Firms in 2026",
       slug: "best-prop-firms-2026",
       excerpt: "A starter guide to comparing prop firms by fees, rules, and payout policies.",
       content:
         "## Overview\n\nChoosing a prop firm depends on your trading style, budget, and risk tolerance.\n\nCompare drawdown rules, profit splits, and evaluation fees before you commit.",
-      published: true,
-      publishedAt: new Date(),
+      category: "Rankings",
+      difficulty: "Beginner",
+      readTimeMinutes: 6,
     },
+    {
+      title: "FTMO vs Funding Pips: Full Comparison",
+      slug: "ftmo-vs-funding-pips",
+      excerpt: "Side-by-side look at two of the most popular prop firms for forex traders.",
+      content:
+        "## FTMO\n\nEstablished brand with clear rules.\n\n## Funding Pips\n\nCompetitive pricing and frequent promos.",
+      category: "Comparison",
+      difficulty: "Intermediate",
+      readTimeMinutes: 8,
+    },
+    {
+      title: "How to Pass a Prop Firm Challenge",
+      slug: "how-to-pass-prop-challenge",
+      excerpt: "Practical tips on risk, consistency, and avoiding rule violations.",
+      content:
+        "## Risk first\n\nNever risk more than you can afford to lose on evaluation fees.\n\n## Consistency\n\nAvoid lottery trades before payout.",
+      category: "Guide",
+      difficulty: "Beginner",
+      readTimeMinutes: 5,
+    },
+    {
+      title: "May 2026 Coupon Codes Roundup",
+      slug: "coupon-codes-may-2026",
+      excerpt: "Latest discount codes for top prop firms this month.",
+      content:
+        "## Active deals\n\nCheck each firm page for verified coupon codes updated by our team.",
+      category: "Deals",
+      difficulty: "Beginner",
+      readTimeMinutes: 4,
+    },
+    {
+      title: "Instant Funding vs Evaluation Programs",
+      slug: "instant-funding-vs-evaluation",
+      excerpt: "Which program type fits your trading style and budget?",
+      content:
+        "## Instant funding\n\nFaster start, often stricter rules.\n\n## Evaluation\n\nLower entry cost, two-step path to funded account.",
+      category: "Tutorial",
+      difficulty: "Intermediate",
+      readTimeMinutes: 7,
+    },
+    {
+      title: "Top 5 Prop Firms for Beginners",
+      slug: "top-prop-firms-beginners",
+      excerpt: "Firms with simpler rules and supportive communities for new traders.",
+      content:
+        "## What beginners need\n\nClear rules, reasonable fees, and good education resources.",
+      category: "Guide",
+      difficulty: "Beginner",
+      readTimeMinutes: 6,
+    },
+  ];
+
+  await prisma.blogPost.updateMany({
+    where: { category: "Beginner" },
+    data: { category: "Guide" },
   });
+
+  for (const post of blogPosts) {
+    await prisma.blogPost.upsert({
+      where: { slug: post.slug },
+      update: {
+        category: post.category,
+        difficulty: post.difficulty,
+        readTimeMinutes: post.readTimeMinutes,
+      },
+      create: {
+        ...post,
+        published: true,
+        publishedAt: new Date(),
+      },
+    });
+  }
 
   console.log("Seed complete.");
 }

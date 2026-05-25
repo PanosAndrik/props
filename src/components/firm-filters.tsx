@@ -57,7 +57,7 @@ export function FirmFilters({
         </div>
       )}
 
-      <div className="flex flex-wrap gap-3">
+      <div className="grid gap-3 sm:flex sm:flex-wrap">
         <input
           type="search"
           placeholder="Search firms…"
@@ -72,13 +72,13 @@ export function FirmFilters({
               window as unknown as { _firmSearch?: ReturnType<typeof setTimeout> }
             )._firmSearch = setTimeout(() => update("q", v), 300);
           }}
-          className="min-w-[200px] flex-1 rounded-lg border border-zinc-300 px-3 py-2 text-sm"
+          className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm sm:min-w-[200px] sm:flex-1"
         />
         {showSort && (
           <select
             value={currentSort}
             onChange={(e) => update("sort", e.target.value === "rank" ? "" : e.target.value)}
-            className="rounded-lg border border-zinc-300 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm sm:w-auto"
             aria-label="Sort firms"
           >
             {FIRM_SORT_OPTIONS.map((opt) => (
@@ -91,7 +91,7 @@ export function FirmFilters({
         <select
           defaultValue={params.get("asset") ?? ""}
           onChange={(e) => update("asset", e.target.value)}
-          className="rounded-lg border border-zinc-300 px-3 py-2 text-sm"
+          className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm sm:w-auto"
         >
           <option value="">All assets</option>
           {assetOptions.map((a) => (
@@ -104,7 +104,7 @@ export function FirmFilters({
           <select
             defaultValue={params.get("category") ?? ""}
             onChange={(e) => update("category", e.target.value)}
-            className="rounded-lg border border-zinc-300 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm sm:w-auto"
           >
             <option value="">All categories</option>
             <option value="forex">Forex</option>

@@ -35,6 +35,9 @@ export const firmSchema = z.object({
   copyTrading: z.boolean().default(false),
   noTimeLimit: z.boolean().default(false),
   consistencyRule: z.boolean().default(false),
+  instantFunded: z.boolean().default(false),
+  showInOffers: z.boolean().default(false),
+  brandColor: z.string().optional().nullable(),
 });
 
 export type FirmInput = z.infer<typeof firmSchema>;
@@ -75,5 +78,8 @@ export function firmInputToDb(data: FirmInput, slug: string) {
     copyTrading: data.copyTrading,
     noTimeLimit: data.noTimeLimit,
     consistencyRule: data.consistencyRule,
+    instantFunded: data.instantFunded,
+    showInOffers: data.showInOffers,
+    brandColor: data.brandColor || null,
   };
 }

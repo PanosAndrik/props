@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FirmLogo } from "@/components/firm-logo";
+import { FirmsRankingMobileCards } from "@/components/firms-ranking-mobile-cards";
 import type { FirmSortKey, FirmWithReviews } from "@/lib/firm-sort";
 import {
   avgRating,
@@ -18,7 +19,10 @@ export function FirmsRankingTable({
   sort?: FirmSortKey;
 }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-zinc-200 bg-white shadow-sm">
+    <>
+      <FirmsRankingMobileCards firms={firms} sort={sort} />
+      <div className="-mx-4 hidden overflow-x-auto px-4 md:block md:mx-0 md:px-0">
+      <div className="inline-block min-w-full rounded-xl border border-zinc-200 bg-white shadow-sm">
       <table className="w-full min-w-[900px] text-left text-sm">
         <thead className="border-b border-zinc-200 bg-zinc-50 text-xs uppercase tracking-wide text-zinc-500">
           <tr>
@@ -144,6 +148,8 @@ export function FirmsRankingTable({
       {firms.length === 0 && (
         <p className="px-4 py-12 text-center text-sm text-zinc-500">No firms found.</p>
       )}
-    </div>
+      </div>
+      </div>
+    </>
   );
 }

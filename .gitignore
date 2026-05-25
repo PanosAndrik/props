@@ -41,6 +41,8 @@ yarn-error.log*
 # uploaded images (keep folder via .gitkeep)
 /public/uploads/blog/*
 !/public/uploads/blog/.gitkeep
+/public/uploads/firms/*
+!/public/uploads/firms/.gitkeep
 
 # local database
 /prisma/*.db

@@ -1,12 +1,26 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ComparePicker } from "@/components/compare-picker";
+import { CompareShareButton } from "@/components/compare-share-button";
+import { CompareSync } from "@/components/compare-sync";
+import { affiliateOutUrl } from "@/lib/affiliate-out";
+
+export const metadata: Metadata = {
+  title: "Compare Prop Firms | PropCompare",
+  description: "Side-by-side comparison of prop firm fees, rules, ratings, and coupons.",
+};
 
 type Props = { searchParams: Promise<{ firms?: string }> };
 
+function yesNo(v: boolean) {
+  return v ? "Yes" : "No";
+}
+
 export default async function ComparePage({ searchParams }: Props) {
   const { firms: firmsParam } = await searchParams;
-  const slugs = firmsParam?.split(",").filter(Boolean) ?? [];
+  const slugs = firmsParam?.split(",").filter(Boolean).slice(0, 3) ?? [];
 
   const allFirms = await prisma.propFirm.findMany({
     where: { published: true },
@@ -23,6 +37,10 @@ export default async function ComparePage({ searchParams }: Props) {
               where: { status: "APPROVED" },
               select: { rating: true },
             },
+            challenges: {
+              where: { published: true },
+              select: { id: true },
+            },
           },
         })
       : [];
@@ -34,23 +52,34 @@ export default async function ComparePage({ searchParams }: Props) {
           .filter((f): f is NonNullable<typeof f> => !!f)
       : [];
 
+  const sharePath =
+    slugs.length >= 2 ? `/compare?firms=${slugs.join(",")}` : "/compare";
+
   return (
-    <main className="mx-auto max-w-5xl px-4 py-12">
+    <main className="mx-auto w-full min-w-0 max-w-5xl px-4 py-8 sm:py-12">
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Compare" },
+        ]}
+      />
       <h1 className="text-3xl font-bold">Compare prop firms</h1>
       <p className="mt-2 text-zinc-600">
         Side-by-side comparison of fees, rules, and ratings.
       </p>
 
+      {ordered.length >= 2 && <CompareSync slugs={slugs} />}
+
       {ordered.length < 2 ? (
         <ComparePicker firms={allFirms} />
       ) : (
         <>
-          <Link
-            href="/compare"
-            className="mt-6 inline-block text-sm text-amber-700 hover:underline"
-          >
-            ← Change selection
-          </Link>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <Link href="/compare" className="text-sm text-amber-700 hover:underline">
+              ← Change selection
+            </Link>
+            <CompareShareButton path={sharePath} />
+          </div>
 
           <div className="mt-8 overflow-x-auto rounded-xl border border-zinc-200 bg-white">
             <table className="w-full min-w-[640px] text-left text-sm">
@@ -68,7 +97,9 @@ export default async function ComparePage({ searchParams }: Props) {
               </thead>
               <tbody className="divide-y divide-zinc-100">
                 <CompareRow label="Rating" values={ordered.map(avgRating)} />
+                <CompareRow label="Category" values={ordered.map((f) => f.category)} />
                 <CompareRow label="Assets" values={ordered.map((f) => f.assetTypes)} />
+                <CompareRow label="Platforms" values={ordered.map((f) => f.platforms || "—")} />
                 <CompareRow
                   label="Profit split"
                   values={ordered.map((f) => f.profitSplit ?? "—")}
@@ -84,6 +115,32 @@ export default async function ComparePage({ searchParams }: Props) {
                   )}
                 />
                 <CompareRow
+                  label="Max allocation"
+                  values={ordered.map((f) => f.maxAllocation ?? "—")}
+                />
+                <CompareRow
+                  label="Payout speed"
+                  values={ordered.map((f) => f.payoutSpeed ?? "—")}
+                />
+                <CompareRow
+                  label="Challenges"
+                  values={ordered.map((f) =>
+                    f.challenges.length > 0 ? `${f.challenges.length} plans` : "—"
+                  )}
+                />
+                <CompareRow
+                  label="Instant funded"
+                  values={ordered.map((f) => yesNo(f.instantFunded))}
+                />
+                <CompareRow
+                  label="News trading"
+                  values={ordered.map((f) => yesNo(f.newsTrading))}
+                />
+                <CompareRow
+                  label="Weekend holding"
+                  values={ordered.map((f) => yesNo(f.weekendHolding))}
+                />
+                <CompareRow
                   label="Discount"
                   values={ordered.map((f) =>
                     f.discountPercent
@@ -94,11 +151,11 @@ export default async function ComparePage({ searchParams }: Props) {
                 <CompareRow
                   label="Link"
                   values={ordered.map((f) => {
-                    const url = f.affiliateUrl ?? f.websiteUrl;
-                    return url ? (
+                    const hasOutbound = !!(f.affiliateUrl ?? f.websiteUrl);
+                    return hasOutbound ? (
                       <a
                         key={f.id}
-                        href={url}
+                        href={affiliateOutUrl(f.slug, "compare")}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-amber-700 hover:underline"

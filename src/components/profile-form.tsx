@@ -2,8 +2,10 @@
 
 import { useState, useTransition } from "react";
 import { updateProfile } from "@/lib/actions/update-profile";
+import { useToast } from "@/components/toast-provider";
 
 export function ProfileForm({ initialName }: { initialName: string }) {
+  const toast = useToast();
   const [name, setName] = useState(initialName);
   const [message, setMessage] = useState("");
   const [pending, startTransition] = useTransition();
@@ -15,8 +17,10 @@ export function ProfileForm({ initialName }: { initialName: string }) {
       try {
         await updateProfile(name);
         setMessage("Profile updated.");
+        toast("Profile updated");
       } catch {
         setMessage("Could not update profile.");
+        toast("Could not update profile");
       }
     });
   }

@@ -12,6 +12,7 @@ export default async function AdminDashboardPage() {
     approvedCount,
     userCount,
     pendingReviews,
+    clicksLast7,
   ] = await Promise.all([
     prisma.propFirm.count(),
     prisma.propFirm.count({ where: { published: true } }),
@@ -29,6 +30,13 @@ export default async function AdminDashboardPage() {
       },
       orderBy: { createdAt: "desc" },
     }),
+    prisma.affiliateClick.count({
+      where: {
+        createdAt: {
+          gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        },
+      },
+    }),
   ]);
 
   return (
@@ -45,8 +53,13 @@ export default async function AdminDashboardPage() {
         <StatCard label="Approved reviews" value={approvedCount} href="/admin/reviews?status=APPROVED" />
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <StatCard label="Registered users" value={userCount} href="/admin/users" />
+        <StatCard
+          label="Affiliate clicks (7d)"
+          value={clicksLast7}
+          href="/admin/analytics"
+        />
       </div>
 
       <section className="mt-12 rounded-xl border border-zinc-200 bg-white p-6">

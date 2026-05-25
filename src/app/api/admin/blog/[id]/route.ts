@@ -9,6 +9,9 @@ const postSchema = z.object({
   excerpt: z.string().optional().nullable(),
   content: z.string().min(1).optional(),
   coverImage: z.string().optional().nullable(),
+  category: z.string().optional().nullable(),
+  readTimeMinutes: z.coerce.number().int().min(1).optional().nullable(),
+  difficulty: z.string().optional().nullable(),
   published: z.boolean().optional(),
 });
 

@@ -7,6 +7,7 @@ import {
   formToPayload,
   type FirmFormState,
 } from "@/lib/firm-form-mapper";
+import { ImageUploadField } from "./image-upload-field";
 
 export function FirmForm({ initial }: { initial?: Partial<FirmFormState> }) {
   const router = useRouter();
@@ -83,14 +84,29 @@ export function FirmForm({ initial }: { initial?: Partial<FirmFormState> }) {
             <input className={inputClass} type="date" value={form.foundedAt} onChange={(e) => set("foundedAt", e.target.value)} />
           </Field>
         </div>
-        <Field label="Logo URL">
-          <input className={inputClass} value={form.logoUrl} onChange={(e) => set("logoUrl", e.target.value)} />
-        </Field>
+        <ImageUploadField
+          label="Logo"
+          value={form.logoUrl}
+          onChange={(url) => set("logoUrl", url)}
+          uploadFolder="firms"
+          compact
+        />
         <div className="flex flex-wrap gap-4">
           <Check label="Published" checked={form.published} onChange={(v) => set("published", v)} />
           <Check label="Featured" checked={form.featured} onChange={(v) => set("featured", v)} />
           <Check label="NEW badge" checked={form.isNew} onChange={(v) => set("isNew", v)} />
+          <Check label="Show in homepage offers" checked={form.showInOffers} onChange={(v) => set("showInOffers", v)} />
+          <Check label="Instant funded" checked={form.instantFunded} onChange={(v) => set("instantFunded", v)} />
         </div>
+        <Field label="Offer card color" hint="blue, green, orange, purple">
+          <select className={inputClass} value={form.brandColor} onChange={(e) => set("brandColor", e.target.value)}>
+            <option value="">Auto</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="orange">Orange</option>
+            <option value="purple">Purple</option>
+          </select>
+        </Field>
       </Section>
 
       <Section title="Trading & metrics">

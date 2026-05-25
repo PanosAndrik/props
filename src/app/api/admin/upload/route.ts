@@ -19,6 +19,8 @@ const EXT_BY_TYPE: Record<string, string> = {
   "image/gif": "gif",
 };
 
+const ALLOWED_FOLDERS = new Set(["blog", "firms"]);
+
 export async function POST(request: Request) {
   const forbidden = await assertAdminApi();
   if (forbidden) return forbidden;
@@ -45,16 +47,22 @@ export async function POST(request: Request) {
       );
     }
 
+    const folderRaw = formData.get("folder");
+    const folder =
+      typeof folderRaw === "string" && ALLOWED_FOLDERS.has(folderRaw)
+        ? folderRaw
+        : "blog";
+
     const ext = EXT_BY_TYPE[file.type] ?? "jpg";
     const filename = `${Date.now()}-${randomBytes(8).toString("hex")}.${ext}`;
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "blog");
+    const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
 
     await mkdir(uploadDir, { recursive: true });
 
     const buffer = Buffer.from(await file.arrayBuffer());
     await writeFile(path.join(uploadDir, filename), buffer);
 
-    const url = `/uploads/blog/${filename}`;
+    const url = `/uploads/${folder}/${filename}`;
     return NextResponse.json({ url });
   } catch {
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });

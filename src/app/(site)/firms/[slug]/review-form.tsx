@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/toast-provider";
 
 export function ReviewForm({
   firmId,
@@ -11,6 +12,7 @@ export function ReviewForm({
   firmName: string;
 }) {
   const router = useRouter();
+  const toast = useToast();
   const [rating, setRating] = useState(5);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -34,10 +36,13 @@ export function ReviewForm({
       setTitle("");
       setBody("");
       setMessage("Review submitted — waiting for admin approval.");
+      toast("Review submitted — pending approval");
       router.refresh();
     } else {
       const data = await res.json().catch(() => ({}));
-      setMessage(data.error ?? "Could not submit review.");
+      const err = data.error ?? "Could not submit review.";
+      setMessage(err);
+      toast(err);
     }
   }
 
