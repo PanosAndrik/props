@@ -18,11 +18,11 @@ export default async function FirmChallengesPage({ params }: Props) {
     <>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <Link href={`/admin/firms/${firm.id}/edit`} className="text-sm text-zinc-500 hover:text-zinc-800">
+          <Link href={`/admin/firms/${firm.id}/edit`} className="text-caption hover:text-zinc-800">
             ← {firm.name}
           </Link>
-          <h2 className="mt-2 text-2xl font-bold text-zinc-900">Challenges</h2>
-          <p className="mt-1 text-sm text-zinc-600">
+          <h2 className="mt-2 page-title">Challenges</h2>
+          <p className="mt-1 text-body-sm">
             Programs shown on the firm&apos;s Challenges tab.
           </p>
         </div>
@@ -36,7 +36,7 @@ export default async function FirmChallengesPage({ params }: Props) {
 
       <div className="mt-8 overflow-hidden rounded-xl border border-zinc-200 bg-white">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-zinc-200 bg-zinc-50 text-xs uppercase text-zinc-500">
+          <thead className="border-b border-zinc-200 bg-zinc-50 table-head">
             <tr>
               <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Size</th>
@@ -77,7 +77,7 @@ export default async function FirmChallengesPage({ params }: Props) {
           </tbody>
         </table>
         {firm.challenges.length === 0 && (
-          <p className="px-4 py-8 text-center text-sm text-zinc-500">No challenges yet.</p>
+          <p className="px-4 py-8 text-center text-caption">No challenges yet.</p>
         )}
       </div>
     </>

@@ -24,15 +24,15 @@ export default async function DealsPage() {
   return (
     <main className="mx-auto w-full min-w-0 max-w-6xl px-4 py-8 sm:py-12">
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Deals" }]} />
-      <h1 className="text-2xl font-bold sm:text-3xl">Exclusive deals</h1>
-      <p className="mt-2 text-zinc-600">
+      <h1 className="page-title">Exclusive deals</h1>
+      <p className="mt-2 text-muted">
         Copy discount codes and save at checkout on prop firms.
       </p>
 
       {firms.length === 0 ? (
         <div className="mt-12 rounded-xl border border-zinc-200 bg-white px-6 py-12 text-center">
           <p className="font-medium text-zinc-800">No deals published yet</p>
-          <p className="mt-2 text-sm text-zinc-500">Check back soon or browse all firms.</p>
+          <p className="mt-2 text-caption">Check back soon or browse all firms.</p>
         </div>
       ) : (
         <div className="mt-8 grid gap-2.5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">

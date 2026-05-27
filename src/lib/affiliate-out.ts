@@ -3,6 +3,8 @@ export const AFFILIATE_SOURCES = [
   "firm-page",
   "firm-sticky",
   "firm-offer",
+  "firm-buy",
+  "firm-bottom-cta",
   "deals",
   "offers-home",
   "compare",

@@ -8,8 +8,8 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="text-3xl font-bold">About PropCompare</h1>
-      <div className="mt-6 space-y-4 text-zinc-700 leading-relaxed">
+      <h1 className="page-title">About PropCompare</h1>
+      <div className="prose-page mt-6">
         <p>
           PropCompare helps traders find and compare proprietary trading firms using
           real community reviews, transparent rules, and exclusive coupon codes.
@@ -19,7 +19,7 @@ export default function AboutPage() {
           before it appears on a firm&apos;s page — so you get honest feedback, not
           marketing copy.
         </p>
-        <h2 className="pt-4 text-lg font-semibold text-zinc-900">What you can do</h2>
+        <h2 className="subsection-title pt-4">What you can do</h2>
         <ul className="list-inside list-disc space-y-2 text-zinc-700">
           <li>Browse and filter prop firms by assets, fees, and ratings</li>
           <li>Compare up to 3 firms side by side</li>

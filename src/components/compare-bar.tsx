@@ -23,7 +23,7 @@ export function CompareBar() {
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-200 bg-white px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
         <p className="text-sm text-zinc-700">
-          <span className="font-semibold text-zinc-900">{slugs.length}</span>
+          <span className="subsection-title">{slugs.length}</span>
           {slugs.length === 1 ? " firm" : " firms"} selected
           {slugs.length < 2 && (
             <span className="text-zinc-500"> · pick one more to compare</span>

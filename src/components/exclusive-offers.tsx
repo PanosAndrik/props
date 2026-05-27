@@ -20,7 +20,7 @@ export function ExclusiveOffers({
     <section className="mx-auto w-full max-w-6xl px-4 py-4 sm:py-6">
       <div className="mb-3 flex flex-col gap-1 sm:mb-4 sm:flex-row sm:items-end sm:justify-between sm:gap-2">
         <div>
-          <h2 className="text-base font-bold text-zinc-900 sm:text-xl">{title}</h2>
+          <h2 className="section-title">{title}</h2>
           {subtitle && (
             <p className="mt-0.5 text-xs text-zinc-600 sm:mt-1 sm:text-sm">{subtitle}</p>
           )}

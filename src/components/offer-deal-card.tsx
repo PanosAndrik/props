@@ -53,12 +53,12 @@ export function OfferDealCard({
       </div>
       <div className={`flex flex-1 flex-col px-2.5 py-2 sm:p-3 ${colors.bg}`}>
         {firm.discountPercent != null && (
-          <p className="hidden text-xl font-bold sm:block">{firm.discountPercent}% OFF</p>
+          <p className="section-title hidden sm:block">{firm.discountPercent}% OFF</p>
         )}
         {code && (
           <div className="flex flex-wrap items-center justify-center gap-2 sm:mt-2">
             <p
-              className={`rounded border border-dashed border-zinc-400 bg-white px-2 py-1 font-mono text-[11px] font-bold sm:text-xs ${colors.code}`}
+              className={`coupon-code-sm rounded border border-dashed border-zinc-400 bg-white px-2 py-1 ${colors.code}`}
             >
               {code}
             </p>

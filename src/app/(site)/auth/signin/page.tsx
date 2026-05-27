@@ -32,9 +32,9 @@ export default function SignInPage() {
 
   return (
     <main className="mx-auto max-w-md px-4 py-16">
-      <h1 className="text-2xl font-bold">Sign in</h1>
+      <h1 className="page-title">Sign in</h1>
       <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-        <label className="block text-sm">
+        <label className="form-label">
           Email
           <input
             type="email"
@@ -44,7 +44,7 @@ export default function SignInPage() {
             className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2"
           />
         </label>
-        <label className="block text-sm">
+        <label className="form-label">
           Password
           <input
             type="password"
@@ -62,7 +62,7 @@ export default function SignInPage() {
           Sign in
         </button>
       </form>
-      <p className="mt-4 text-center text-sm text-zinc-600">
+      <p className="text-body-sm mt-4 text-center">
         No account?{" "}
         <Link href="/auth/signup" className="font-medium underline">
           Sign up

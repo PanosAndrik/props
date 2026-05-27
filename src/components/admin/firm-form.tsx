@@ -136,6 +136,34 @@ export function FirmForm({ initial }: { initial?: Partial<FirmFormState> }) {
         <Field label="Affiliate URL"><input className={inputClass} type="url" value={form.affiliateUrl} onChange={(e) => set("affiliateUrl", e.target.value)} /></Field>
       </Section>
 
+      <Section title="Firm profile page" hint="PropCompare-style firm detail layout">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Legal company name"><input className={inputClass} value={form.legalName} onChange={(e) => set("legalName", e.target.value)} /></Field>
+          <Field label="Headquarters" hint="e.g. Prague, Czech Republic"><input className={inputClass} value={form.headquarters} onChange={(e) => set("headquarters", e.target.value)} /></Field>
+          <Field label="Trust score" hint="0–100"><input className={inputClass} type="number" min={0} max={100} value={form.trustScore} onChange={(e) => set("trustScore", e.target.value)} /></Field>
+          <Field label="Challenge types" hint="e.g. 1-Step, 2-Step"><input className={inputClass} value={form.challengeTypes} onChange={(e) => set("challengeTypes", e.target.value)} /></Field>
+          <Field label="Max challenge fee ($)"><input className={inputClass} type="number" value={form.maxChallengeFee} onChange={(e) => set("maxChallengeFee", e.target.value)} /></Field>
+          <Field label="Broker name"><input className={inputClass} value={form.brokerName} onChange={(e) => set("brokerName", e.target.value)} /></Field>
+          <Field label="Daily drawdown"><input className={inputClass} value={form.dailyDrawdown} onChange={(e) => set("dailyDrawdown", e.target.value)} /></Field>
+          <Field label="Profit target P1"><input className={inputClass} value={form.profitTargetP1} onChange={(e) => set("profitTargetP1", e.target.value)} /></Field>
+          <Field label="Profit target P2"><input className={inputClass} value={form.profitTargetP2} onChange={(e) => set("profitTargetP2", e.target.value)} /></Field>
+          <Field label="Payout frequency"><input className={inputClass} value={form.payoutFrequency} onChange={(e) => set("payoutFrequency", e.target.value)} /></Field>
+          <Field label="Min trading days"><input className={inputClass} value={form.minTradingDays} onChange={(e) => set("minTradingDays", e.target.value)} /></Field>
+          <Field label="Max trading days"><input className={inputClass} value={form.maxTradingDays} onChange={(e) => set("maxTradingDays", e.target.value)} /></Field>
+          <Field label="Scaling plan"><input className={inputClass} value={form.scalingPlan} onChange={(e) => set("scalingPlan", e.target.value)} /></Field>
+          <Field label="Swap free"><input className={inputClass} value={form.swapFree} onChange={(e) => set("swapFree", e.target.value)} /></Field>
+        </div>
+        <Check label="PropCompare verified badge" checked={form.verified} onChange={(v) => set("verified", v)} />
+        <Field label="Referral stats line" hint="e.g. 12,000 traders chose FTMO via PropCompare">
+          <input className={inputClass} value={form.referralStats} onChange={(e) => set("referralStats", e.target.value)} />
+        </Field>
+        <Field label="Incentive paragraph" hint="Marketing box below coupon">
+          <textarea className={inputClass} rows={3} value={form.incentiveText} onChange={(e) => set("incentiveText", e.target.value)} />
+        </Field>
+        <Field label="Rules detail"><textarea className={inputClass} rows={4} value={form.rulesDetail} onChange={(e) => set("rulesDetail", e.target.value)} /></Field>
+        <Field label="Drawdown explained"><textarea className={inputClass} rows={3} value={form.drawdownExplained} onChange={(e) => set("drawdownExplained", e.target.value)} /></Field>
+      </Section>
+
       <Section title="Pros & cons" hint="One item per line">
         <Field label="Pros">
           <textarea className={inputClass} rows={4} value={form.prosText} onChange={(e) => set("prosText", e.target.value)} />
@@ -166,8 +194,8 @@ export function FirmForm({ initial }: { initial?: Partial<FirmFormState> }) {
 function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
     <fieldset className="space-y-4 rounded-xl border border-zinc-200 bg-white p-5">
-      <legend className="px-1 text-sm font-semibold text-zinc-900">{title}</legend>
-      {hint && <p className="text-xs text-zinc-500">{hint}</p>}
+      <legend className="subsection-title px-1">{title}</legend>
+      {hint && <p className="text-caption">{hint}</p>}
       {children}
     </fieldset>
   );
@@ -176,8 +204,8 @@ function Section({ title, hint, children }: { title: string; hint?: string; chil
 function Field({ label, hint, required, children }: { label: string; hint?: string; required?: boolean; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-zinc-700">{label}{required && " *"}</label>
-      {hint && <p className="text-xs text-zinc-500">{hint}</p>}
+      <label className="form-label">{label}{required && " *"}</label>
+      {hint && <p className="text-caption">{hint}</p>}
       <div className="mt-1">{children}</div>
     </div>
   );

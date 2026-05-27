@@ -48,12 +48,12 @@ export default async function AccountPage() {
   return (
     <main className="mx-auto max-w-2xl px-4 py-12">
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Account" }]} />
-      <h1 className="text-3xl font-bold">My account</h1>
-      <p className="mt-2 text-zinc-600">Your profile, saved firms, and reviews.</p>
+      <h1 className="page-title">My account</h1>
+      <p className="mt-2 text-muted">Your profile, saved firms, and reviews.</p>
 
       <section className="mt-8 rounded-xl border border-zinc-200 bg-white p-6">
-        <h2 className="font-semibold text-zinc-900">Profile</h2>
-        <p className="mt-2 text-sm text-zinc-600">{user.email}</p>
+        <h2 className="subsection-title">Profile</h2>
+        <p className="mt-2 text-body-sm">{user.email}</p>
         <p className="mt-1 text-xs text-zinc-500">
           Member since {user.createdAt.toLocaleDateString()}
         </p>
@@ -61,9 +61,9 @@ export default async function AccountPage() {
       </section>
 
       <section className="mt-8">
-        <h2 className="font-semibold text-zinc-900">Saved firms</h2>
+        <h2 className="subsection-title">Saved firms</h2>
         {user.favorites.length === 0 ? (
-          <p className="mt-4 text-sm text-zinc-500">
+          <p className="mt-4 text-caption">
             No saved firms yet. Open a firm page and tap &quot;Save firm&quot;.{" "}
             <Link href="/firms" className="text-amber-700 underline">
               Browse firms
@@ -85,7 +85,7 @@ export default async function AccountPage() {
                     {fav.firm.name}
                   </Link>
                   {fav.firm.description && (
-                    <p className="mt-0.5 truncate text-sm text-zinc-500">
+                    <p className="mt-0.5 truncate text-caption">
                       {fav.firm.description}
                     </p>
                   )}
@@ -103,9 +103,9 @@ export default async function AccountPage() {
       </section>
 
       <section className="mt-8">
-        <h2 className="font-semibold text-zinc-900">My reviews</h2>
+        <h2 className="subsection-title">My reviews</h2>
         {user.reviews.length === 0 ? (
-          <p className="mt-4 text-sm text-zinc-500">
+          <p className="mt-4 text-caption">
             You haven&apos;t submitted any reviews yet.{" "}
             <Link href="/firms" className="text-amber-700 underline">
               Browse firms
@@ -137,7 +137,7 @@ export default async function AccountPage() {
                   {review.title && (
                     <p className="mt-1 font-medium">{review.title}</p>
                   )}
-                  <p className="mt-1 text-sm text-zinc-600">{review.body}</p>
+                  <p className="mt-1 text-body-sm">{review.body}</p>
                   <p className="mt-2 text-xs text-zinc-400">
                     {review.createdAt.toLocaleString()}
                   </p>

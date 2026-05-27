@@ -10,8 +10,8 @@ export default function DisclosurePage() {
       <Breadcrumbs
         items={[{ label: "Home", href: "/" }, { label: "Affiliate disclosure" }]}
       />
-      <h1 className="text-3xl font-bold">Affiliate disclosure</h1>
-      <div className="mt-6 space-y-4 text-sm leading-relaxed text-zinc-700">
+      <h1 className="page-title">Affiliate disclosure</h1>
+      <div className="prose-page mt-6">
         <p>
           PropCompare may earn commissions when you sign up with a prop firm through links or
           coupon codes on this site. This helps keep the platform free for traders.
@@ -21,7 +21,7 @@ export default function DisclosurePage() {
           which deals we highlight. We aim to show accurate discount codes and link to official
           partner pages where possible.
         </p>
-        <p className="text-xs text-zinc-500">Last updated: May 2026</p>
+        <p className="text-caption">Last updated: May 2026</p>
       </div>
     </main>
   );

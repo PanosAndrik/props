@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto border-t border-zinc-200 bg-white">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-8 text-sm text-zinc-500">
+    <footer className="mt-auto border-t border-zinc-200 bg-white text-body-sm">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-8 text-caption">
         <p>© {new Date().getFullYear()} PropCompare</p>
         <nav className="flex flex-wrap gap-x-6 gap-y-2">
           <Link href="/firms" className="hover:text-zinc-900">

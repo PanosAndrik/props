@@ -9,8 +9,8 @@ export default async function AdminAnalyticsPage() {
 
   return (
     <>
-      <h2 className="text-2xl font-bold text-zinc-900">Affiliate click analytics</h2>
-      <p className="mt-1 text-sm text-zinc-600">
+      <h2 className="page-title">Affiliate click analytics</h2>
+      <p className="mt-1 text-body-sm">
         Outbound clicks via <code className="rounded bg-zinc-100 px-1">/out/[slug]</code> tracking
         links (last 30 days breakdown below).
       </p>
@@ -23,13 +23,13 @@ export default async function AdminAnalyticsPage() {
 
       <div className="mt-10 grid gap-8 lg:grid-cols-2">
         <section className="rounded-xl border border-zinc-200 bg-white p-6">
-          <h3 className="font-semibold text-zinc-900">Clicks by firm (30d)</h3>
+          <h3 className="subsection-title">Clicks by firm (30d)</h3>
           {data.clicksByFirm.length === 0 ? (
-            <p className="mt-4 text-sm text-zinc-500">No clicks recorded yet.</p>
+            <p className="mt-4 text-caption">No clicks recorded yet.</p>
           ) : (
             <table className="mt-4 w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-zinc-100 text-xs uppercase text-zinc-500">
+                <tr className="border-b border-zinc-100 table-head">
                   <th className="pb-2">Firm</th>
                   <th className="pb-2 text-right">Clicks</th>
                 </tr>
@@ -55,9 +55,9 @@ export default async function AdminAnalyticsPage() {
         </section>
 
         <section className="rounded-xl border border-zinc-200 bg-white p-6">
-          <h3 className="font-semibold text-zinc-900">Clicks by source (30d)</h3>
+          <h3 className="subsection-title">Clicks by source (30d)</h3>
           {data.clicksBySource.length === 0 ? (
-            <p className="mt-4 text-sm text-zinc-500">No data yet.</p>
+            <p className="mt-4 text-caption">No data yet.</p>
           ) : (
             <ul className="mt-4 space-y-2">
               {data.clicksBySource.map((row) => (
@@ -78,14 +78,14 @@ export default async function AdminAnalyticsPage() {
       </div>
 
       <section className="mt-10 rounded-xl border border-zinc-200 bg-white p-6">
-        <h3 className="font-semibold text-zinc-900">Recent clicks</h3>
+        <h3 className="subsection-title">Recent clicks</h3>
         {data.recent.length === 0 ? (
-          <p className="mt-4 text-sm text-zinc-500">No clicks yet.</p>
+          <p className="mt-4 text-caption">No clicks yet.</p>
         ) : (
           <div className="mt-4 overflow-x-auto">
             <table className="w-full min-w-[520px] text-left text-sm">
               <thead>
-                <tr className="border-b border-zinc-100 text-xs uppercase text-zinc-500">
+                <tr className="border-b border-zinc-100 table-head">
                   <th className="pb-2 pr-4">When</th>
                   <th className="pb-2 pr-4">Firm</th>
                   <th className="pb-2 pr-4">Source</th>
@@ -117,7 +117,7 @@ export default async function AdminAnalyticsPage() {
 function Stat({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-xl border border-zinc-200 bg-white p-5">
-      <p className="text-3xl font-bold text-zinc-900">{value}</p>
+      <p className="stat-value">{value}</p>
       <p className="text-sm font-medium text-zinc-600">{label}</p>
     </div>
   );

@@ -30,7 +30,7 @@ export function AdminShell({
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <Link href="/admin" className="text-lg font-bold tracking-tight" onClick={() => setSidebarOpen(false)}>
+        <Link href="/admin" className="brand-title" onClick={() => setSidebarOpen(false)}>
           PropCompare
         </Link>
         <p className="mt-1 text-xs text-zinc-500">Admin panel</p>
@@ -58,7 +58,7 @@ export function AdminShell({
           >
             ☰
           </button>
-          {title && <h1 className="text-lg font-semibold text-zinc-900 sm:text-xl">{title}</h1>}
+          {title && <h1 className="page-title">{title}</h1>}
         </header>
         <main className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
       </div>

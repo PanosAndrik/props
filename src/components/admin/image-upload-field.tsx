@@ -78,7 +78,7 @@ export function ImageUploadField({
 
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-zinc-700">{label}</label>
+      <label className="form-label">{label}</label>
 
       <input
         ref={inputRef}
@@ -130,7 +130,7 @@ export function ImageUploadField({
           </div>
         ) : (
           <>
-            {!compact && <p className="text-sm text-zinc-600">JPG, PNG, WebP or GIF — max 5 MB</p>}
+            {!compact && <p className="text-body-sm">JPG, PNG, WebP or GIF — max 5 MB</p>}
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
@@ -151,7 +151,7 @@ export function ImageUploadField({
             <button
               type="button"
               onClick={() => setShowUrlOption(true)}
-              className="text-sm text-zinc-500 underline hover:text-zinc-800"
+              className="text-caption underline hover:text-zinc-800"
             >
               Or paste an https:// URL
             </button>

@@ -2,66 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import {
+  emptyChallengeForm,
+  formToPayload,
+  type ChallengeFormState,
+} from "@/lib/challenge-form-mapper";
 
-export type ChallengeFormState = {
-  id?: string;
-  name: string;
-  accountSize: string;
-  price: string;
-  profitTarget: string;
-  maxDrawdown: string;
-  profitSplit: string;
-  published: boolean;
-  sortOrder: string;
-};
-
-export const emptyChallengeForm: ChallengeFormState = {
-  name: "",
-  accountSize: "",
-  price: "",
-  profitTarget: "",
-  maxDrawdown: "",
-  profitSplit: "",
-  published: true,
-  sortOrder: "0",
-};
-
-export function challengeToForm(c: {
-  id: string;
-  name: string;
-  accountSize: string | null;
-  price: number | null;
-  profitTarget: string | null;
-  maxDrawdown: string | null;
-  profitSplit: string | null;
-  published: boolean;
-  sortOrder: number;
-}): ChallengeFormState {
-  return {
-    id: c.id,
-    name: c.name,
-    accountSize: c.accountSize ?? "",
-    price: c.price != null ? String(c.price) : "",
-    profitTarget: c.profitTarget ?? "",
-    maxDrawdown: c.maxDrawdown ?? "",
-    profitSplit: c.profitSplit ?? "",
-    published: c.published,
-    sortOrder: String(c.sortOrder),
-  };
-}
-
-function formToPayload(form: ChallengeFormState) {
-  return {
-    name: form.name,
-    accountSize: form.accountSize || null,
-    price: form.price === "" ? null : Number(form.price),
-    profitTarget: form.profitTarget || null,
-    maxDrawdown: form.maxDrawdown || null,
-    profitSplit: form.profitSplit || null,
-    published: form.published,
-    sortOrder: parseInt(form.sortOrder, 10) || 0,
-  };
-}
+export type { ChallengeFormState } from "@/lib/challenge-form-mapper";
 
 const inputClass =
   "w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none";
@@ -112,7 +59,7 @@ export function ChallengeForm({
       )}
 
       <div>
-        <label className="block text-sm font-medium text-zinc-700">Challenge name *</label>
+        <label className="form-label">Challenge name *</label>
         <input
           className={inputClass}
           value={form.name}
@@ -124,7 +71,7 @@ export function ChallengeForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium text-zinc-700">Account size</label>
+          <label className="form-label">Account size</label>
           <input
             className={inputClass}
             value={form.accountSize}
@@ -133,7 +80,7 @@ export function ChallengeForm({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-700">Price ($)</label>
+          <label className="form-label">Price ($)</label>
           <input
             className={inputClass}
             type="number"
@@ -144,7 +91,7 @@ export function ChallengeForm({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-700">Profit target</label>
+          <label className="form-label">Profit target</label>
           <input
             className={inputClass}
             value={form.profitTarget}
@@ -153,7 +100,7 @@ export function ChallengeForm({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-700">Max drawdown</label>
+          <label className="form-label">Max drawdown</label>
           <input
             className={inputClass}
             value={form.maxDrawdown}
@@ -162,7 +109,7 @@ export function ChallengeForm({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-700">Profit split</label>
+          <label className="form-label">Profit split</label>
           <input
             className={inputClass}
             value={form.profitSplit}
@@ -171,7 +118,7 @@ export function ChallengeForm({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-700">Sort order</label>
+          <label className="form-label">Sort order</label>
           <input
             className={inputClass}
             type="number"

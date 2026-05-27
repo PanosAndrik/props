@@ -27,8 +27,8 @@ export default async function BlogPage({ searchParams }: Props) {
   return (
     <main className="mx-auto w-full min-w-0 max-w-6xl px-4 py-8 sm:py-12">
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Blog" }]} />
-      <h1 className="text-2xl font-bold sm:text-3xl">Blog</h1>
-      <p className="mt-2 text-zinc-600">
+      <h1 className="page-title">Blog</h1>
+      <p className="mt-2 text-muted">
         Guides, comparisons, and prop firm news.
       </p>
 
@@ -36,7 +36,7 @@ export default async function BlogPage({ searchParams }: Props) {
         <BlogCategoryPills active={category} />
       </div>
 
-      <p className="mt-4 text-sm text-zinc-500">
+      <p className="mt-4 text-caption">
         {posts.length} post{posts.length !== 1 ? "s" : ""}
         {category ? ` in ${category}` : ""}
       </p>

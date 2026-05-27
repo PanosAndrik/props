@@ -8,14 +8,14 @@ export default async function AdminUsersPage() {
 
   return (
     <>
-      <h2 className="text-2xl font-bold text-zinc-900">Users</h2>
-      <p className="mt-1 text-sm text-zinc-600">
+      <h2 className="page-title">Users</h2>
+      <p className="mt-1 text-body-sm">
         Registered accounts on your platform.
       </p>
 
       <div className="mt-8 overflow-hidden rounded-xl border border-zinc-200 bg-white">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-zinc-200 bg-zinc-50 text-xs uppercase text-zinc-500">
+          <thead className="border-b border-zinc-200 bg-zinc-50 table-head">
             <tr>
               <th className="px-4 py-3">Email</th>
               <th className="px-4 py-3">Name</th>

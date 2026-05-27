@@ -11,8 +11,8 @@ export default async function AdminFirmsPage() {
     <>
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-zinc-900">Prop firms</h2>
-          <p className="mt-1 text-sm text-zinc-600">Manage firms shown on the public site.</p>
+          <h2 className="page-title">Prop firms</h2>
+          <p className="mt-1 text-body-sm">Manage firms shown on the public site.</p>
         </div>
         <Link
           href="/admin/firms/new"
@@ -24,7 +24,7 @@ export default async function AdminFirmsPage() {
 
       <div className="mt-8 overflow-hidden rounded-xl border border-zinc-200 bg-white">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-zinc-200 bg-zinc-50 text-xs uppercase text-zinc-500">
+          <thead className="border-b border-zinc-200 bg-zinc-50 table-head">
             <tr>
               <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Rank</th>
@@ -39,7 +39,7 @@ export default async function AdminFirmsPage() {
               <tr key={firm.id}>
                 <td className="px-4 py-3">
                   <p className="font-medium">{firm.name}</p>
-                  <p className="text-xs text-zinc-500">/firms/{firm.slug}</p>
+                  <p className="text-caption">/firms/{firm.slug}</p>
                 </td>
                 <td className="px-4 py-3 font-mono text-zinc-600">{firm.rankOrder}</td>
                 <td className="px-4 py-3">
@@ -75,7 +75,7 @@ export default async function AdminFirmsPage() {
           </tbody>
         </table>
         {firms.length === 0 && (
-          <p className="px-4 py-8 text-center text-sm text-zinc-500">No firms yet.</p>
+          <p className="px-4 py-8 text-center text-caption">No firms yet.</p>
         )}
       </div>
     </>

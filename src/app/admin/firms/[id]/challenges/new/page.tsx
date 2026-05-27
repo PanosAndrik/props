@@ -14,11 +14,11 @@ export default async function NewChallengePage({ params }: Props) {
     <>
       <Link
         href={`/admin/firms/${firm.id}/challenges`}
-        className="text-sm text-zinc-500 hover:text-zinc-800"
+        className="text-caption hover:text-zinc-800"
       >
         ← Challenges
       </Link>
-      <h2 className="mt-2 text-2xl font-bold text-zinc-900">New challenge — {firm.name}</h2>
+      <h2 className="mt-2 page-title">New challenge — {firm.name}</h2>
       <div className="mt-8">
         <ChallengeForm
           firmId={firm.id}

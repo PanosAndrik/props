@@ -36,7 +36,7 @@ function SignUpForm() {
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-      <label className="block text-sm">
+      <label className="form-label">
         Name
         <input
           value={name}
@@ -44,7 +44,7 @@ function SignUpForm() {
           className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2"
         />
       </label>
-      <label className="block text-sm">
+      <label className="form-label">
         Email
         <input
           type="email"
@@ -54,7 +54,7 @@ function SignUpForm() {
           className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2"
         />
       </label>
-      <label className="block text-sm">
+      <label className="form-label">
         Password (min 6 chars)
         <input
           type="password"
@@ -79,11 +79,11 @@ function SignUpForm() {
 export default function SignUpPage() {
   return (
     <main className="mx-auto max-w-md px-4 py-16">
-      <h1 className="text-2xl font-bold">Sign up</h1>
-      <Suspense fallback={<p className="mt-8 text-sm text-zinc-500">Loading…</p>}>
+      <h1 className="page-title">Sign up</h1>
+      <Suspense fallback={<p className="mt-8 text-caption">Loading…</p>}>
         <SignUpForm />
       </Suspense>
-      <p className="mt-4 text-center text-sm text-zinc-600">
+      <p className="text-body-sm mt-4 text-center">
         Already have an account?{" "}
         <Link href="/auth/signin" className="font-medium underline">
           Sign in

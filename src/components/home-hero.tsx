@@ -27,13 +27,13 @@ export function HomeHero({
       <div className="mx-auto w-full max-w-6xl">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between lg:gap-6">
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">
+            <p className="text-label text-amber-800">
               Prop firm comparison platform
             </p>
-            <h1 className="mt-1 text-xl font-bold tracking-tight text-zinc-900 sm:text-2xl">
+            <h1 className="page-title mt-1">
               Find & compare trusted prop firms
             </h1>
-            <p className="mt-1 text-sm text-zinc-600">
+            <p className="mt-1 text-body-sm">
               {isAdmin
                 ? "Manage firms, reviews, and content."
                 : isLoggedIn

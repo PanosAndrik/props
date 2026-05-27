@@ -56,8 +56,8 @@ export default async function FirmsPage({ searchParams }: Props) {
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Firms" }]} />
       <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold sm:text-3xl">Prop firm rankings</h1>
-          <p className="mt-2 text-zinc-600">
+          <h1 className="page-title">Prop firm rankings</h1>
+          <p className="mt-2 text-muted">
             Compare firms by rating, country, assets, platforms, and promos.
           </p>
         </div>
@@ -79,7 +79,7 @@ export default async function FirmsPage({ searchParams }: Props) {
         <FirmFilters assetOptions={assetOptions} showCategory={false} showSort={false} />
       </Suspense>
 
-      <p className="mt-4 text-sm text-zinc-500">
+      <p className="mt-4 text-caption">
         {firms.length} firm{firms.length !== 1 ? "s" : ""} · sorted by{" "}
         <span className="font-medium text-zinc-700">{sortLabel(sort)}</span>
       </p>

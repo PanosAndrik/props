@@ -1,0 +1,23 @@
+-- AlterTable
+ALTER TABLE "PropFirm" ADD COLUMN "legalName" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "headquarters" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "trustScore" INTEGER;
+ALTER TABLE "PropFirm" ADD COLUMN "verified" BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE "PropFirm" ADD COLUMN "referralStats" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "incentiveText" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "challengeTypes" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "maxChallengeFee" REAL;
+ALTER TABLE "PropFirm" ADD COLUMN "profitTargetP1" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "profitTargetP2" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "payoutFrequency" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "brokerName" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "dailyDrawdown" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "minTradingDays" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "maxTradingDays" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "scalingPlan" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "swapFree" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "drawdownExplained" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "rulesDetail" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "payoutsDetail" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "faqJson" TEXT;
+ALTER TABLE "PropFirm" ADD COLUMN "profileUpdatedAt" DATETIME;

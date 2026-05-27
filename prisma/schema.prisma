@@ -142,6 +142,29 @@ model PropFirm {
 
   showInOffers    Boolean  @default(false)
 
+  legalName         String?
+  headquarters      String?
+  trustScore        Int?
+  verified          Boolean  @default(false)
+  referralStats     String?
+  incentiveText     String?
+  challengeTypes    String?
+  maxChallengeFee   Float?
+  profitTargetP1    String?
+  profitTargetP2    String?
+  payoutFrequency   String?
+  brokerName        String?
+  dailyDrawdown     String?
+  minTradingDays    String?
+  maxTradingDays    String?
+  scalingPlan       String?
+  swapFree          String?
+  drawdownExplained String?
+  rulesDetail       String?
+  payoutsDetail     String?
+  faqJson           String?
+  profileUpdatedAt  DateTime?
+
   createdAt       DateTime @default(now())
 
   updatedAt       DateTime @updatedAt

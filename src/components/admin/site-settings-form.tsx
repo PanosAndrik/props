@@ -56,14 +56,14 @@ export function SiteSettingsForm({ initial }: { initial: SiteSettings }) {
       {saved && (
         <p className="rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-800">Saved.</p>
       )}
-      <p className="text-sm text-zinc-600">
+      <p className="text-body-sm">
         Homepage stats and offers text. Use marketing numbers if you want (they do not need to match real DB counts).
       </p>
       <div className="grid gap-4 sm:grid-cols-2">
         {fields.map(({ key, label, hint }) => (
           <div key={key}>
-            <label className="block text-sm font-medium text-zinc-700">{label}</label>
-            {hint && <p className="text-xs text-zinc-500">{hint}</p>}
+            <label className="form-label">{label}</label>
+            {hint && <p className="text-caption">{hint}</p>}
             <input
               className="mt-1 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm"
               value={(form[key] as string) ?? ""}

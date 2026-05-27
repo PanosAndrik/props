@@ -60,8 +60,8 @@ export default async function ReviewsPage({ searchParams }: Props) {
   return (
     <main className="mx-auto w-full min-w-0 max-w-4xl px-4 py-8 sm:py-12">
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Reviews" }]} />
-      <h1 className="text-2xl font-bold sm:text-3xl">Trader reviews</h1>
-      <p className="mt-2 text-zinc-600">
+      <h1 className="page-title">Trader reviews</h1>
+      <p className="mt-2 text-muted">
         Verified reviews from traders on prop firms.
       </p>
 
@@ -69,7 +69,7 @@ export default async function ReviewsPage({ searchParams }: Props) {
         <ReviewsFilters firms={firmOptions} />
       </Suspense>
 
-      <p className="mt-4 text-sm text-zinc-500">
+      <p className="mt-4 text-caption">
         {total} review{total !== 1 ? "s" : ""}
         {firmSlug || ratingParam ? " (filtered)" : ""}
       </p>
@@ -77,7 +77,7 @@ export default async function ReviewsPage({ searchParams }: Props) {
       {reviews.length === 0 ? (
         <div className="mt-12 rounded-xl border border-zinc-200 bg-white px-6 py-12 text-center">
           <p className="font-medium text-zinc-800">No reviews match your filters</p>
-          <p className="mt-2 text-sm text-zinc-500">
+          <p className="mt-2 text-caption">
             Be the first to share your experience on a firm page.
           </p>
           <Link
@@ -139,7 +139,7 @@ export default async function ReviewsPage({ searchParams }: Props) {
               ← Prev
             </Link>
           )}
-          <span className="text-sm text-zinc-600">
+          <span className="text-body-sm">
             Page {page} of {totalPages}
           </span>
           {page < totalPages && (

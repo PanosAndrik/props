@@ -24,7 +24,7 @@ export function FirmsRankingTable({
       <div className="-mx-4 hidden overflow-x-auto px-4 md:block md:mx-0 md:px-0">
       <div className="inline-block min-w-full rounded-xl border border-zinc-200 bg-white shadow-sm">
       <table className="w-full min-w-[900px] text-left text-sm">
-        <thead className="border-b border-zinc-200 bg-zinc-50 text-xs uppercase tracking-wide text-zinc-500">
+        <thead className="border-b border-zinc-200 bg-zinc-50 table-head">
           <tr>
             <th className="px-4 py-3">#</th>
             <th className="px-4 py-3">Firm</th>
@@ -60,10 +60,10 @@ export function FirmsRankingTable({
                   >
                     <FirmLogo name={firm.name} logoUrl={firm.logoUrl} size="sm" />
                     <div>
-                      <p className="font-semibold text-zinc-900">
+                      <p className="subsection-title">
                         {firm.name}
                         {firm.isNew && (
-                          <span className="ml-2 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-emerald-800">
+                          <span className="ml-2 pill-badge bg-emerald-100 text-emerald-800">
                             New
                           </span>
                         )}
@@ -98,7 +98,7 @@ export function FirmsRankingTable({
                     {assets.slice(0, 4).map((a) => (
                       <span
                         key={a}
-                        className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase text-zinc-600"
+                        className="pill-badge bg-zinc-100 text-zinc-600"
                       >
                         {a}
                       </span>
@@ -111,7 +111,7 @@ export function FirmsRankingTable({
                       platforms.map((p) => (
                         <span
                           key={p}
-                          className="rounded border border-zinc-200 px-1.5 py-0.5 text-[10px] font-medium text-zinc-700"
+                          className="pill-badge border border-zinc-200 text-zinc-700"
                         >
                           {platformLabel(p)}
                         </span>
@@ -146,7 +146,7 @@ export function FirmsRankingTable({
         </tbody>
       </table>
       {firms.length === 0 && (
-        <p className="px-4 py-12 text-center text-sm text-zinc-500">No firms found.</p>
+        <p className="px-4 py-12 text-center text-caption">No firms found.</p>
       )}
       </div>
       </div>

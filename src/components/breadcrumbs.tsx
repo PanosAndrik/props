@@ -6,7 +6,7 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
   if (items.length === 0) return null;
 
   return (
-    <nav aria-label="Breadcrumb" className="mb-4 text-sm text-zinc-500">
+    <nav aria-label="Breadcrumb" className="text-caption mb-4">
       <ol className="flex flex-wrap items-center gap-1.5">
         {items.map((item, i) => (
           <li key={i} className="flex items-center gap-1.5">

@@ -6,8 +6,8 @@ export default async function AdminSettingsPage() {
 
   return (
     <>
-      <h2 className="text-2xl font-bold text-zinc-900">Homepage settings</h2>
-      <p className="mt-1 text-sm text-zinc-600">
+      <h2 className="page-title">Homepage settings</h2>
+      <p className="mt-1 text-body-sm">
         Stats row and exclusive offers section on the public homepage.
       </p>
       <div className="mt-8">

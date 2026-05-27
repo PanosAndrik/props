@@ -1,11 +1,11 @@
 import Link from "next/link";
 import type { BlogPost } from "@prisma/client";
 import { BlogCoverImage } from "@/components/blog-cover-image";
-import { categoryStyle } from "@/lib/blog-meta";
+import { BlogCategoryBadge } from "@/components/blog-category-badge";
 
 export function BlogPostGrid({ posts }: { posts: BlogPost[] }) {
   if (posts.length === 0) {
-    return <p className="text-sm text-zinc-500">No posts yet.</p>;
+    return <p className="text-caption">No posts yet.</p>;
   }
 
   return (
@@ -27,15 +27,11 @@ export function BlogPostGrid({ posts }: { posts: BlogPost[] }) {
           ) : null}
           <div className="flex flex-1 flex-col p-4">
             {post.category && (
-              <span
-                className={`mb-2 inline-block w-fit rounded border px-2 py-0.5 text-xs font-semibold ${categoryStyle(post.category)}`}
-              >
-                {post.category}
-              </span>
+              <BlogCategoryBadge category={post.category} className="mb-2" />
             )}
-            <h3 className="font-semibold text-zinc-900 line-clamp-2">{post.title}</h3>
+            <h3 className="subsection-title line-clamp-2">{post.title}</h3>
             {post.excerpt && (
-              <p className="mt-2 flex-1 text-sm text-zinc-600 line-clamp-3">{post.excerpt}</p>
+              <p className="mt-2 flex-1 text-body-sm line-clamp-3">{post.excerpt}</p>
             )}
             <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-zinc-500">
               {post.readTimeMinutes != null && (

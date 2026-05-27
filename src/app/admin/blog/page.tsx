@@ -34,8 +34,8 @@ export default async function AdminBlogPage({ searchParams }: Props) {
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-zinc-900">Blog</h2>
-          <p className="mt-1 text-sm text-zinc-600">Create and publish articles.</p>
+          <h2 className="page-title">Blog</h2>
+          <p className="mt-1 text-body-sm">Create and publish articles.</p>
         </div>
         <Link
           href="/admin/blog/new"
@@ -49,13 +49,13 @@ export default async function AdminBlogPage({ searchParams }: Props) {
         <AdminBlogFilters />
       </Suspense>
 
-      <p className="mt-4 text-sm text-zinc-500">
+      <p className="mt-4 text-caption">
         Showing {posts.length} of {total} post{total !== 1 ? "s" : ""}
       </p>
 
       <div className="mt-4 overflow-x-auto rounded-xl border border-zinc-200 bg-white">
         <table className="w-full min-w-[720px] text-left text-sm">
-          <thead className="border-b border-zinc-200 bg-zinc-50 text-xs uppercase text-zinc-500">
+          <thead className="border-b border-zinc-200 bg-zinc-50 table-head">
             <tr>
               <th className="px-4 py-3">Title</th>
               <th className="px-4 py-3">Category</th>
@@ -71,7 +71,7 @@ export default async function AdminBlogPage({ searchParams }: Props) {
               <tr key={post.id} className="hover:bg-zinc-50/50">
                 <td className="px-4 py-3">
                   <p className="font-medium">{post.title}</p>
-                  <p className="text-xs text-zinc-500">/blog/{post.slug}</p>
+                  <p className="text-caption">/blog/{post.slug}</p>
                   {post.readTimeMinutes != null && (
                     <p className="text-xs text-zinc-400">{post.readTimeMinutes} min read</p>
                   )}
@@ -129,7 +129,7 @@ export default async function AdminBlogPage({ searchParams }: Props) {
           </tbody>
         </table>
         {posts.length === 0 && (
-          <p className="px-4 py-8 text-center text-sm text-zinc-500">
+          <p className="px-4 py-8 text-center text-caption">
             No posts match your filters.{" "}
             <Link href="/admin/blog" className="text-amber-700 underline">
               Clear filters

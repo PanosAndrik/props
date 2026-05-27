@@ -41,14 +41,14 @@ export function FirmOfferCard({
         {code || discountPercent ? (
           <div className="flex-1">
             {discountPercent ? (
-              <p className="text-lg font-bold text-emerald-700">{discountPercent}% OFF</p>
+              <p className="section-title text-emerald-700">{discountPercent}% OFF</p>
             ) : null}
-            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+            <p className="text-label">
               Coupon code
             </p>
             {code ? (
               <div className="mt-2 flex flex-wrap items-center gap-3">
-                <span className="inline-block rounded-lg border-2 border-dashed border-amber-400 bg-amber-50 px-4 py-2 font-mono text-2xl font-bold tracking-wider text-zinc-900">
+                <span className="coupon-code inline-block rounded-lg border-2 border-dashed border-amber-400 bg-amber-50 px-4 py-2 text-zinc-900">
                   {code}
                 </span>
                 <CopyCouponButton code={code} />
@@ -56,7 +56,7 @@ export function FirmOfferCard({
             ) : null}
           </div>
         ) : (
-          <p className="flex-1 text-sm text-zinc-600">
+          <p className="flex-1 text-body-sm">
             Visit the official site to get started with {firmName}.
           </p>
         )}

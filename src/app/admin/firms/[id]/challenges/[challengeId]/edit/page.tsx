@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { ChallengeForm, challengeToForm } from "@/components/admin/challenge-form";
+import { ChallengeForm } from "@/components/admin/challenge-form";
+import { challengeToForm } from "@/lib/challenge-form-mapper";
 import { DeleteButton } from "@/components/admin/delete-button";
 
 type Props = { params: Promise<{ id: string; challengeId: string }> };
@@ -20,11 +21,11 @@ export default async function EditChallengePage({ params }: Props) {
         <div>
           <Link
             href={`/admin/firms/${id}/challenges`}
-            className="text-sm text-zinc-500 hover:text-zinc-800"
+            className="text-caption hover:text-zinc-800"
           >
             ← Challenges
           </Link>
-          <h2 className="mt-2 text-2xl font-bold text-zinc-900">
+          <h2 className="mt-2 page-title">
             Edit — {challenge.firm.name}
           </h2>
         </div>

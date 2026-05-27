@@ -41,8 +41,8 @@ export default async function AdminDashboardPage() {
 
   return (
     <>
-      <h2 className="text-2xl font-bold text-zinc-900">Dashboard</h2>
-      <p className="mt-1 text-sm text-zinc-600">
+      <h2 className="page-title">Dashboard</h2>
+      <p className="mt-1 text-body-sm">
         Overview of your prop firm comparison platform.
       </p>
 
@@ -64,13 +64,13 @@ export default async function AdminDashboardPage() {
 
       <section className="mt-12 rounded-xl border border-zinc-200 bg-white p-6">
         <div className="flex items-center justify-between">
-          <h3 className="font-semibold text-zinc-900">Recent pending reviews</h3>
+          <h3 className="subsection-title">Recent pending reviews</h3>
           <Link href="/admin/reviews" className="text-sm text-amber-700 hover:underline">
             View all →
           </Link>
         </div>
         {pendingReviews.length === 0 ? (
-          <p className="mt-4 text-sm text-zinc-500">No reviews waiting for approval.</p>
+          <p className="mt-4 text-caption">No reviews waiting for approval.</p>
         ) : (
           <ul className="mt-4 divide-y divide-zinc-100">
             {pendingReviews.map((review) => (
@@ -83,11 +83,11 @@ export default async function AdminDashboardPage() {
                     {" — "}
                     {"★".repeat(review.rating)}
                   </p>
-                  <p className="text-sm text-zinc-500">
+                  <p className="text-caption">
                     {review.user.name ?? review.user.email}
                   </p>
                   {review.title && <p className="mt-1 text-sm font-medium">{review.title}</p>}
-                  <p className="mt-1 text-sm text-zinc-600 line-clamp-2">{review.body}</p>
+                  <p className="mt-1 text-body-sm line-clamp-2">{review.body}</p>
                 </div>
                 <AdminReviewActions reviewId={review.id} />
               </li>
@@ -123,7 +123,7 @@ function StatCard({
         highlight ? "border-amber-300 ring-1 ring-amber-200" : "border-zinc-200"
       }`}
     >
-      <p className="text-3xl font-bold text-zinc-900">{value}</p>
+      <p className="stat-value">{value}</p>
       <p className="text-sm font-medium text-zinc-600">{label}</p>
       {sub && <p className="mt-1 text-xs text-zinc-500">{sub}</p>}
     </div>

@@ -13,7 +13,7 @@ export default async function EditBlogPage({ params }: Props) {
   return (
     <>
       <div className="flex items-start justify-between gap-4">
-        <h2 className="text-2xl font-bold text-zinc-900">Edit post</h2>
+        <h2 className="page-title">Edit post</h2>
         <DeleteButton url={`/api/admin/blog/${post.id}`} redirectTo="/admin/blog" />
       </div>
       <div className="mt-8">

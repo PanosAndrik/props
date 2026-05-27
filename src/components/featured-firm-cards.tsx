@@ -12,7 +12,7 @@ export function FeaturedFirmCards({ firms }: { firms: FeaturedFirm[] }) {
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-6">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-bold sm:text-xl">Featured firms</h2>
+        <h2 className="section-title">Featured firms</h2>
         <Link href="/firms" className="text-sm font-medium text-amber-700 hover:underline">
           View all →
         </Link>
@@ -36,7 +36,7 @@ export function FeaturedFirmCards({ firms }: { firms: FeaturedFirm[] }) {
                 </div>
               </div>
               <div className="flex flex-1 flex-col p-4">
-                <p className="line-clamp-3 text-sm text-zinc-600">
+                <p className="line-clamp-3 text-body-sm">
                   {firm.description}
                 </p>
                 <p className="mt-3 text-sm font-medium text-zinc-800">

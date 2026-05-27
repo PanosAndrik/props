@@ -40,6 +40,27 @@ export type FirmFormState = {
   instantFunded: boolean;
   showInOffers: boolean;
   brandColor: string;
+  legalName: string;
+  headquarters: string;
+  trustScore: string;
+  verified: boolean;
+  referralStats: string;
+  incentiveText: string;
+  challengeTypes: string;
+  maxChallengeFee: string;
+  profitTargetP1: string;
+  profitTargetP2: string;
+  payoutFrequency: string;
+  brokerName: string;
+  dailyDrawdown: string;
+  minTradingDays: string;
+  maxTradingDays: string;
+  scalingPlan: string;
+  swapFree: string;
+  drawdownExplained: string;
+  rulesDetail: string;
+  payoutsDetail: string;
+  faqJson: string;
 };
 
 export const emptyFirmForm: FirmFormState = {
@@ -80,6 +101,27 @@ export const emptyFirmForm: FirmFormState = {
   instantFunded: false,
   showInOffers: false,
   brandColor: "",
+  legalName: "",
+  headquarters: "",
+  trustScore: "",
+  verified: false,
+  referralStats: "",
+  incentiveText: "",
+  challengeTypes: "",
+  maxChallengeFee: "",
+  profitTargetP1: "",
+  profitTargetP2: "",
+  payoutFrequency: "",
+  brokerName: "",
+  dailyDrawdown: "",
+  minTradingDays: "",
+  maxTradingDays: "",
+  scalingPlan: "",
+  swapFree: "",
+  drawdownExplained: "",
+  rulesDetail: "",
+  payoutsDetail: "",
+  faqJson: "",
 };
 
 export function firmToForm(firm: PropFirm): FirmFormState {
@@ -122,6 +164,27 @@ export function firmToForm(firm: PropFirm): FirmFormState {
     instantFunded: firm.instantFunded,
     showInOffers: firm.showInOffers,
     brandColor: firm.brandColor ?? "",
+    legalName: firm.legalName ?? "",
+    headquarters: firm.headquarters ?? "",
+    trustScore: firm.trustScore?.toString() ?? "",
+    verified: firm.verified,
+    referralStats: firm.referralStats ?? "",
+    incentiveText: firm.incentiveText ?? "",
+    challengeTypes: firm.challengeTypes ?? "",
+    maxChallengeFee: firm.maxChallengeFee?.toString() ?? "",
+    profitTargetP1: firm.profitTargetP1 ?? "",
+    profitTargetP2: firm.profitTargetP2 ?? "",
+    payoutFrequency: firm.payoutFrequency ?? "",
+    brokerName: firm.brokerName ?? "",
+    dailyDrawdown: firm.dailyDrawdown ?? "",
+    minTradingDays: firm.minTradingDays ?? "",
+    maxTradingDays: firm.maxTradingDays ?? "",
+    scalingPlan: firm.scalingPlan ?? "",
+    swapFree: firm.swapFree ?? "",
+    drawdownExplained: firm.drawdownExplained ?? "",
+    rulesDetail: firm.rulesDetail ?? "",
+    payoutsDetail: firm.payoutsDetail ?? "",
+    faqJson: firm.faqJson ?? "",
   };
 }
 
@@ -164,5 +227,27 @@ export function formToPayload(form: FirmFormState) {
     instantFunded: form.instantFunded,
     showInOffers: form.showInOffers,
     brandColor: form.brandColor || null,
+    legalName: form.legalName || null,
+    headquarters: form.headquarters || null,
+    trustScore: form.trustScore ? Number(form.trustScore) : null,
+    verified: form.verified,
+    referralStats: form.referralStats || null,
+    incentiveText: form.incentiveText || null,
+    challengeTypes: form.challengeTypes || null,
+    maxChallengeFee: form.maxChallengeFee ? Number(form.maxChallengeFee) : null,
+    profitTargetP1: form.profitTargetP1 || null,
+    profitTargetP2: form.profitTargetP2 || null,
+    payoutFrequency: form.payoutFrequency || null,
+    brokerName: form.brokerName || null,
+    dailyDrawdown: form.dailyDrawdown || null,
+    minTradingDays: form.minTradingDays || null,
+    maxTradingDays: form.maxTradingDays || null,
+    scalingPlan: form.scalingPlan || null,
+    swapFree: form.swapFree || null,
+    drawdownExplained: form.drawdownExplained || null,
+    rulesDetail: form.rulesDetail || null,
+    payoutsDetail: form.payoutsDetail || null,
+    faqJson: form.faqJson.trim() || null,
+    profileUpdatedAt: new Date(),
   };
 }

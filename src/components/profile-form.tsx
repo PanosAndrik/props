@@ -28,7 +28,7 @@ export function ProfileForm({ initialName }: { initialName: string }) {
   return (
     <form onSubmit={onSubmit} className="mt-4 flex flex-wrap items-end gap-3">
       <div className="min-w-[200px] flex-1">
-        <label className="block text-sm font-medium text-zinc-700">Display name</label>
+        <label className="form-label">Display name</label>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -43,7 +43,7 @@ export function ProfileForm({ initialName }: { initialName: string }) {
       >
         {pending ? "Saving…" : "Save"}
       </button>
-      {message && <p className="w-full text-sm text-zinc-600">{message}</p>}
+      {message && <p className="w-full text-body-sm">{message}</p>}
     </form>
   );
 }

@@ -32,8 +32,8 @@ export default async function AdminReviewsPage({ searchParams }: Props) {
 
   return (
     <>
-      <h2 className="text-2xl font-bold text-zinc-900">Reviews</h2>
-      <p className="mt-1 text-sm text-zinc-600">
+      <h2 className="page-title">Reviews</h2>
+      <p className="mt-1 text-body-sm">
         Moderate user-submitted firm reviews.
       </p>
 
@@ -59,7 +59,7 @@ export default async function AdminReviewsPage({ searchParams }: Props) {
 
       <div className="mt-8 space-y-4">
         {reviews.length === 0 ? (
-          <p className="text-sm text-zinc-500">No reviews in this filter.</p>
+          <p className="text-caption">No reviews in this filter.</p>
         ) : (
           reviews.map((review) => (
             <article
@@ -78,7 +78,7 @@ export default async function AdminReviewsPage({ searchParams }: Props) {
                       {"★".repeat(review.rating)}
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-zinc-500">
+                  <p className="mt-1 text-caption">
                     {review.user.name ?? review.user.email} ·{" "}
                     {review.createdAt.toLocaleString()}
                   </p>

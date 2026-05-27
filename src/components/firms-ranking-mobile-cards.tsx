@@ -35,10 +35,10 @@ export function FirmsRankingMobileCards({
                 <Link href={`/firms/${firm.slug}`} className="flex items-center gap-2">
                   <FirmLogo name={firm.name} logoUrl={firm.logoUrl} size="sm" />
                   <div className="min-w-0">
-                    <p className="truncate font-semibold text-zinc-900">
+                    <p className="subsection-title truncate">
                       {firm.name}
                       {firm.isNew && (
-                        <span className="ml-1 rounded bg-emerald-100 px-1 py-0.5 text-[9px] font-bold uppercase text-emerald-800">
+                        <span className="ml-1 pill-badge bg-emerald-100 text-emerald-800">
                           New
                         </span>
                       )}
@@ -63,7 +63,7 @@ export function FirmsRankingMobileCards({
                     {assets.slice(0, 3).map((a) => (
                       <span
                         key={a}
-                        className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium uppercase text-zinc-600"
+                        className="pill-badge bg-zinc-100 text-zinc-600"
                       >
                         {a}
                       </span>

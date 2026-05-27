@@ -63,8 +63,8 @@ export default async function ComparePage({ searchParams }: Props) {
           { label: "Compare" },
         ]}
       />
-      <h1 className="text-3xl font-bold">Compare prop firms</h1>
-      <p className="mt-2 text-zinc-600">
+      <h1 className="page-title">Compare prop firms</h1>
+      <p className="mt-2 text-muted">
         Side-by-side comparison of fees, rules, and ratings.
       </p>
 
@@ -84,10 +84,10 @@ export default async function ComparePage({ searchParams }: Props) {
           <div className="mt-8 overflow-x-auto rounded-xl border border-zinc-200 bg-white">
             <table className="w-full min-w-[640px] text-left text-sm">
               <thead>
-                <tr className="border-b border-zinc-200 bg-zinc-50">
-                  <th className="px-4 py-3 text-zinc-500">Feature</th>
+                <tr className="border-b border-zinc-200 bg-zinc-50 table-head">
+                  <th className="px-4 py-3">Feature</th>
                   {ordered.map((f) => (
-                    <th key={f.id} className="px-4 py-3 font-semibold">
+                    <th key={f.id} className="px-4 py-3 normal-case">
                       <Link href={`/firms/${f.slug}`} className="hover:underline">
                         {f.name}
                       </Link>
@@ -194,7 +194,7 @@ function CompareRow({
 }) {
   return (
     <tr>
-      <td className="px-4 py-3 font-medium text-zinc-500">{label}</td>
+      <td className="text-label px-4 py-3 normal-case">{label}</td>
       {values.map((v, i) => (
         <td key={i} className="px-4 py-3">
           {v}

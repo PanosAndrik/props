@@ -15,13 +15,13 @@ export function HomeRankingsSection({
 }) {
   return (
     <section id="rankings" className="mx-auto w-full max-w-6xl scroll-mt-24 px-4 pb-6 pt-2">
-      <h2 className="mb-3 text-lg font-bold sm:text-xl">Prop firm rankings</h2>
+      <h2 className="section-title mb-3">Prop firm rankings</h2>
 
       <Suspense fallback={<div className="h-14 animate-pulse rounded-xl bg-zinc-100" />}>
         <HomeFilterPills sort={sort} />
       </Suspense>
 
-      <p className="mt-3 text-sm text-zinc-500">
+      <p className="mt-3 text-caption">
         {firms.length} shown · {totalFirmCount} total firms
       </p>
 
@@ -31,7 +31,7 @@ export function HomeRankingsSection({
         ) : (
           <div className="rounded-xl border border-zinc-200 bg-white px-6 py-12 text-center">
             <p className="font-medium text-zinc-800">No firms match this filter</p>
-            <p className="mt-2 text-sm text-zinc-500">
+            <p className="mt-2 text-caption">
               Try another category or clear filters to see all firms.
             </p>
             <Link

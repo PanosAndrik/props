@@ -5,9 +5,9 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { BlogCoverImage } from "@/components/blog-cover-image";
 import { BlogMarkdown } from "@/components/blog-markdown";
+import { BlogCategoryBadge } from "@/components/blog-category-badge";
 import { RelatedBlogPosts } from "@/components/related-blog-posts";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { categoryStyle } from "@/lib/blog-meta";
 import { getRelatedBlogPosts } from "@/lib/related-blog-posts";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -53,12 +53,13 @@ export default async function BlogPostPage({ params }: Props) {
   };
 
   return (
-    <main className="mx-auto px-4 py-12">
+    <main className="mx-auto w-full min-w-0 px-4 py-8 sm:py-12">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="mx-auto max-w-3xl">
+
+      <article className="mx-auto max-w-3xl">
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
@@ -74,52 +75,58 @@ export default async function BlogPostPage({ params }: Props) {
           </p>
         )}
 
-        <h1 className="mt-4 text-3xl font-bold">{post.title}</h1>
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-zinc-500">
-          <time dateTime={publishedDate.toISOString()}>
-            {publishedDate.toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </time>
-          {post.category && (
-            <>
-              <span>·</span>
-              <span
-                className={`rounded border px-2 py-0.5 text-xs font-semibold ${categoryStyle(post.category)}`}
-              >
-                {post.category}
-              </span>
-            </>
-          )}
-          {post.readTimeMinutes != null && (
-            <>
-              <span>·</span>
+        <header className="mt-6 border-b border-zinc-200 pb-8 sm:mt-8 sm:pb-10">
+          <h1 className="article-title">{post.title}</h1>
+
+          <div className="article-meta mt-4">
+            <time dateTime={publishedDate.toISOString()}>
+              {publishedDate.toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </time>
+            {post.category && <BlogCategoryBadge category={post.category} />}
+            {post.readTimeMinutes != null && (
               <span>{post.readTimeMinutes} min read</span>
-            </>
+            )}
+            {post.difficulty && <span>{post.difficulty}</span>}
+          </div>
+
+          {post.excerpt && (
+            <p className="article-lead mt-5 max-w-2xl">{post.excerpt}</p>
           )}
-          {post.difficulty && (
-            <>
-              <span>·</span>
-              <span>{post.difficulty}</span>
-            </>
-          )}
-        </div>
-        {post.excerpt && (
-          <p className="mt-3 text-lg text-zinc-600">{post.excerpt}</p>
-        )}
+        </header>
+
         {post.coverImage ? (
-          <div className="mt-6 overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50">
+          <figure className="mt-8 overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100 shadow-sm sm:mt-10">
             <BlogCoverImage
               src={post.coverImage}
               alt={post.title}
-              className="h-auto max-h-[420px] w-full object-cover"
+              className="aspect-[16/10] w-full object-cover sm:aspect-[2/1]"
             />
-          </div>
+          </figure>
         ) : null}
+
         <BlogMarkdown content={post.content} />
-      </div>
+
+        <footer className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-zinc-200 pt-8 sm:mt-12">
+          <Link
+            href="/blog"
+            className="text-body-sm font-medium text-amber-800 hover:underline"
+          >
+            ← Back to blog
+          </Link>
+          {post.category && (
+            <Link
+              href={`/blog?category=${encodeURIComponent(post.category)}`}
+              className="text-caption hover:text-zinc-800"
+            >
+              More in {post.category}
+            </Link>
+          )}
+        </footer>
+      </article>
 
       <RelatedBlogPosts posts={relatedPosts} category={post.category} />
     </main>

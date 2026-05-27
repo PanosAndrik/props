@@ -35,7 +35,7 @@ export function FirmFilters({
     <div className="mt-6 space-y-4">
       {showSort && (
         <div className="flex flex-wrap gap-2">
-          <span className="self-center text-xs font-medium uppercase text-zinc-500">
+          <span className="text-label self-center">
             Sort by
           </span>
           {FIRM_SORT_OPTIONS.map((opt) => {

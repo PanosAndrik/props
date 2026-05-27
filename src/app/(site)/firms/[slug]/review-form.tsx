@@ -51,7 +51,7 @@ export function ReviewForm({
       onSubmit={handleSubmit}
       className="mt-4 rounded-xl border border-zinc-300 bg-white p-5 text-zinc-900 shadow-sm"
     >
-      <p className="text-sm font-semibold text-zinc-900">Review {firmName}</p>
+      <p className="subsection-title">Review {firmName}</p>
 
       <label className="mt-3 block text-sm text-zinc-700">
         Rating
@@ -98,7 +98,7 @@ export function ReviewForm({
       </button>
 
       {message && (
-        <p className="mt-3 text-sm text-zinc-600">{message}</p>
+        <p className="mt-3 text-body-sm">{message}</p>
       )}
     </form>
   );

@@ -4,13 +4,19 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 const prosFtmo = JSON.stringify([
-  "Well-known brand and large community",
-  "Clear rules and scaling plan",
-  "Multiple account sizes",
+  "Up to 90% profit split — industry leading",
+  "On-demand payouts — no waiting for scheduled dates",
+  "No time limit — trade at your own pace",
+  "Max $400K allocation — scale up to $2M",
+  "Multiple platforms: MT4, MT5, cTrader, DXTrade",
+  "Weekend and overnight holding allowed",
 ]);
 const consFtmo = JSON.stringify([
-  "Stricter consistency on some programs",
-  "Challenge fee on the higher side",
+  "Higher fees vs newer firms — use PROP10 for 10% off",
+  "News trading restricted in funded accounts",
+  "No instant funding — must pass evaluation",
+  "Expert Advisors not allowed in funded accounts",
+  "HFT and arbitrage strictly prohibited",
 ]);
 
 async function main() {
@@ -139,6 +145,35 @@ async function main() {
   const demo = await prisma.user.findUnique({ where: { email: "demo@prop.local" } });
 
   if (ftmo) {
+    await prisma.propFirm.update({
+      where: { id: ftmo.id },
+      data: {
+        legalName: "FTMO s.r.o.",
+        headquarters: "Prague, Czech Republic",
+        trustScore: 92,
+        verified: true,
+        referralStats: "Thousands of traders chose FTMO via PropCompare",
+        incentiveText:
+          "This could be your turning point. Compare rules, use your coupon at checkout, and start your evaluation when you are ready.",
+        challengeTypes: "1-Step, 2-Step",
+        maxChallengeFee: 1080,
+        profitTargetP1: "10%",
+        profitTargetP2: "5%",
+        payoutFrequency: "On demand / Bi-weekly",
+        brokerName: "FTMO",
+        dailyDrawdown: "5%",
+        minTradingDays: "None",
+        maxTradingDays: "Unlimited",
+        scalingPlan: "Up to $2,000,000",
+        swapFree: "Available on request",
+        drawdownExplained:
+          "FTMO uses balance-based drawdown on most programs. Daily drawdown is typically 5% with max overall drawdown of 10%. Check your specific challenge type for exact rules.",
+        rulesDetail:
+          "Standard FTMO rules apply: no martingale abuse, no tick scalping or HFT on funded accounts. Weekend holding is allowed on swing programs.",
+        profileUpdatedAt: new Date(),
+      },
+    });
+
     const ftmoChallenges = [
       {
         name: "2-Step Challenge $10K",

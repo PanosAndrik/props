@@ -40,7 +40,7 @@ export default async function EditFirmPage({ params }: Props) {
 
         <div>
 
-          <h2 className="text-2xl font-bold text-zinc-900">Edit {firm.name}</h2>
+          <h2 className="page-title">Edit {firm.name}</h2>
 
           <Link
 

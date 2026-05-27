@@ -32,8 +32,8 @@ export function NewsletterCta({
   return (
     <section className="border-t border-zinc-200 bg-zinc-100/80 px-4 py-10 sm:py-12">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-xl font-bold text-zinc-900 sm:text-2xl">{title}</h2>
-        <p className="mt-2 text-sm text-zinc-600 sm:text-base">{subtitle}</p>
+        <h2 className="section-title">{title}</h2>
+        <p className="mt-2 text-muted sm:text-base">{subtitle}</p>
 
         <form
           onSubmit={onSubmit}

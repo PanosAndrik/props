@@ -201,7 +201,7 @@ export function BlogForm({ initial }: { initial?: Partial<BlogFormData> }) {
 
       <div>
 
-        <label className="block text-sm font-medium text-zinc-700">Title *</label>
+        <label className="form-label">Title *</label>
 
         <input
 
@@ -221,9 +221,9 @@ export function BlogForm({ initial }: { initial?: Partial<BlogFormData> }) {
 
       <div>
 
-        <label className="block text-sm font-medium text-zinc-700">Slug</label>
+        <label className="form-label">Slug</label>
 
-        <p className="text-xs text-zinc-500">Leave empty to auto-generate</p>
+        <p className="text-caption">Leave empty to auto-generate</p>
 
         <input
 
@@ -243,7 +243,7 @@ export function BlogForm({ initial }: { initial?: Partial<BlogFormData> }) {
 
         <div>
 
-          <label className="block text-sm font-medium text-zinc-700">Category</label>
+          <label className="form-label">Category</label>
 
           <select
 
@@ -273,7 +273,7 @@ export function BlogForm({ initial }: { initial?: Partial<BlogFormData> }) {
 
         <div>
 
-          <label className="block text-sm font-medium text-zinc-700">Difficulty</label>
+          <label className="form-label">Difficulty</label>
 
           <select
 
@@ -303,7 +303,7 @@ export function BlogForm({ initial }: { initial?: Partial<BlogFormData> }) {
 
         <div>
 
-          <label className="block text-sm font-medium text-zinc-700">Read time (min)</label>
+          <label className="form-label">Read time (min)</label>
 
           <input
 
@@ -329,7 +329,7 @@ export function BlogForm({ initial }: { initial?: Partial<BlogFormData> }) {
 
       <div>
 
-        <label className="block text-sm font-medium text-zinc-700">Excerpt</label>
+        <label className="form-label">Excerpt</label>
 
         <textarea
 
@@ -359,7 +359,7 @@ export function BlogForm({ initial }: { initial?: Partial<BlogFormData> }) {
 
       <div>
 
-        <label className="block text-sm font-medium text-zinc-700">Content *</label>
+        <label className="form-label">Content *</label>
 
         <textarea
 

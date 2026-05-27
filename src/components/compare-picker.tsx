@@ -41,7 +41,7 @@ export function ComparePicker({ firms }: { firms: FirmOption[] }) {
 
   return (
     <div className="mt-8">
-      <p className="text-sm text-zinc-600">
+      <p className="text-body-sm">
         Select 2–3 firms to compare side by side ({selected.length}/3 selected). Selection is
         saved in your browser.
       </p>
